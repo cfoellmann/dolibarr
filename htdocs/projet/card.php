@@ -631,20 +631,20 @@ if ($action == 'create' && $user->rights->projet->creer)
 		print '</tr>';
 
 		// Opportunity probability
-		print '<tr class="classuseopportunity"><td>'.$langs->trans("OpportunityProbability").'</td>';
+		print '<tr class="classuseopportunity" style="display:none;"><td>'.$langs->trans("OpportunityProbability").'</td>';
 		print '<td><input size="5" type="text" id="opp_percent" name="opp_percent" value="'.dol_escape_htmltag(GETPOSTISSET('opp_percent') ? GETPOST('opp_percent') : '').'"><span class="hideonsmartphone"> %</span>';
 		print '<input type="hidden" name="opp_percent_not_set" id="opp_percent_not_set" value="'.dol_escape_htmltag(GETPOSTISSET('opp_percent') ? '0' : '1').'">';
 		print '</td>';
 		print '</tr>';
 
 		// Opportunity amount
-		print '<tr class="classuseopportunity"><td>'.$langs->trans("OpportunityAmount").'</td>';
+		print '<tr class="classuseopportunity" style="display:none;"><td>'.$langs->trans("OpportunityAmount").'</td>';
 		print '<td><input size="5" type="text" name="opp_amount" value="'.dol_escape_htmltag(GETPOSTISSET('opp_amount') ? GETPOST('opp_amount') : '').'"></td>';
 		print '</tr>';
 	}
 
 	// Budget
-	print '<tr><td>'.$langs->trans("Budget").'</td>';
+	print '<tr style="display:none;"><td>'.$langs->trans("Budget").'</td>';
 	print '<td><input size="5" type="text" name="budget_amount" value="'.dol_escape_htmltag(GETPOSTISSET('budget_amount') ? GETPOST('budget_amount') : '').'"></td>';
 	print '</tr>';
 
@@ -897,18 +897,18 @@ if ($action == 'create' && $user->rights->projet->creer)
 			print '</td>';
 			print '</tr>';
 
-			// Opportunity probability
-			print '<tr class="classuseopportunity'.$classfortr.'"><td>'.$langs->trans("OpportunityProbability").'</td>';
-			print '<td><input size="5" type="text" id="opp_percent" name="opp_percent" value="'.(GETPOSTISSET('opp_percent') ? GETPOST('opp_percent') : (strcmp($object->opp_percent, '') ?vatrate($object->opp_percent) : '')).'"> %';
-			print '<span id="oldopppercent"></span>';
-			print '</td>';
-			print '</tr>';
+		    // Opportunity probability
+		    print '<tr class="classuseopportunity'.$classfortr.'" style="display:none;"><td>'.$langs->trans("OpportunityProbability").'</td>';
+		    print '<td><input size="5" type="text" id="opp_percent" name="opp_percent" value="'.(GETPOSTISSET('opp_percent') ? GETPOST('opp_percent') : (strcmp($object->opp_percent, '') ?vatrate($object->opp_percent) : '')).'"> %';
+            print '<span id="oldopppercent"></span>';
+		    print '</td>';
+		    print '</tr>';
 
-			// Opportunity amount
-			print '<tr class="classuseopportunity'.$classfortr.'"><td>'.$langs->trans("OpportunityAmount").'</td>';
-			print '<td><input size="5" type="text" name="opp_amount" value="'.(GETPOSTISSET('opp_amount') ? GETPOST('opp_amount') : (strcmp($object->opp_amount, '') ? price2num($object->opp_amount) : '')).'"></td>';
-			print '</tr>';
-		}
+		    // Opportunity amount
+		    print '<tr class="classuseopportunity'.$classfortr.'" style="display:none;"><td>'.$langs->trans("OpportunityAmount").'</td>';
+		    print '<td><input size="5" type="text" name="opp_amount" value="'.(GETPOSTISSET('opp_amount') ? GETPOST('opp_amount') : (strcmp($object->opp_amount, '') ? price2num($object->opp_amount) : '')).'"></td>';
+		    print '</tr>';
+	    }
 
 		// Date start
 		print '<tr><td>'.$langs->trans("DateStart").'</td><td>';
@@ -924,7 +924,7 @@ if ($action == 'create' && $user->rights->projet->creer)
 		print '</td></tr>';
 
 		// Budget
-		print '<tr><td>'.$langs->trans("Budget").'</td>';
+		print '<tr style="display:none;"><td>'.$langs->trans("Budget").'</td>';
 		print '<td><input size="5" type="text" name="budget_amount" value="'.(GETPOSTISSET('budget_amount') ? GETPOST('budget_amount') : (strcmp($object->budget_amount, '') ? price2num($object->budget_amount) : '')).'"></td>';
 		print '</tr>';
 
@@ -1036,12 +1036,12 @@ if ($action == 'create' && $user->rights->projet->creer)
 			print '</td></tr>';
 
 			// Opportunity percent
-			print '<tr><td>'.$langs->trans("OpportunityProbability").'</td><td>';
+			print '<tr style="display:none;"><td>'.$langs->trans("OpportunityProbability").'</td><td>';
 			if (strcmp($object->opp_percent, '')) print price($object->opp_percent, 0, $langs, 1, 0).' %';
 			print '</td></tr>';
 
 			// Opportunity Amount
-			print '<tr><td>'.$langs->trans("OpportunityAmount").'</td><td>';
+			print '<tr style="display:none;"><td>'.$langs->trans("OpportunityAmount").'</td><td>';
 			/*if ($object->opp_status)
 	        {
 	           print price($obj->opp_amount, 1, $langs, 1, 0, -1, $conf->currency);
@@ -1049,10 +1049,10 @@ if ($action == 'create' && $user->rights->projet->creer)
 			if (strcmp($object->opp_amount, '')) print price($object->opp_amount, 0, $langs, 1, 0, -1, $conf->currency);
 			print '</td></tr>';
 
-			// Opportunity Weighted Amount
-			print '<tr><td>'.$langs->trans('OpportunityWeightedAmount').'</td><td>';
-			if (strcmp($object->opp_amount, '') && strcmp($object->opp_percent, '')) print price($object->opp_amount * $object->opp_percent / 100, 0, $langs, 1, 0, -1, $conf->currency);
-			print '</td></tr>';
+            // Opportunity Weighted Amount
+            print '<tr style="display:none;"><td>'.$langs->trans('OpportunityWeightedAmount').'</td><td>';
+            if (strcmp($object->opp_amount, '') && strcmp($object->opp_percent, '')) print price($object->opp_amount * $object->opp_percent / 100, 0, $langs, 1, 0, -1, $conf->currency);
+            print '</td></tr>';
 		}
 
 		// Date start - end
@@ -1066,7 +1066,7 @@ if ($action == 'create' && $user->rights->projet->creer)
 		print '</td></tr>';
 
 		// Budget
-		print '<tr><td>'.$langs->trans("Budget").'</td><td>';
+		print '<tr style="display:none;"><td>'.$langs->trans("Budget").'</td><td>';
 		if (strcmp($object->budget_amount, '')) print price($object->budget_amount, 0, $langs, 1, 0, 0, $conf->currency);
 		print '</td></tr>';
 
