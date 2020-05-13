@@ -751,6 +751,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 					print '<td>'.$tmpproduct->getNomUrl(1);
 					print '<br><span class="opacitymedium small">'.$tmpproduct->label.'</span>';
 					print '</td>';
+					print '<td class="right"><code style="font-size: 1.3em; font-weight: bold;">'.$tmpproduct->array_options['options_storage_location'].'</code></td>';
 					print '<td class="right nowraponall">';
 					$help = '';
 					if ($line->qty_frozen) $help .= ($help ? '<br>' : '').'<strong>'.$langs->trans("QuantityFrozen").'</strong>: '.yn(1).' ('.$langs->trans("QuantityConsumedInvariable").')';
