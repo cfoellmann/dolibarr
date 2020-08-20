@@ -1499,7 +1499,7 @@ if ($action == 'create')
 	print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans('Ref').'</td><td>'.$langs->trans("Draft").'</td></tr>';
 
 	// Ref customer
-	print '<tr><td>'.$langs->trans('RefCustomer').'</td><td>';
+	print '<tr style="display: none;"><td>'.$langs->trans('RefCustomer').'</td><td>';
 	print '<input type="text" name="ref_client" value="'.GETPOST('ref_client').'"></td>';
 	print '</tr>';
 
@@ -1578,12 +1578,12 @@ if ($action == 'create')
 	}
 
 	// What trigger creation
-	print '<tr><td>'.$langs->trans('Source').'</td><td>';
+	print '<tr style="display: none;"><td>'.$langs->trans('Source').'</td><td>';
 	$form->selectInputReason('', 'demand_reason_id', "SRC_PROP", 1);
 	print '</td></tr>';
 
 	// Delivery delay
-	print '<tr class="fielddeliverydelay"><td>'.$langs->trans('AvailabilityPeriod');
+	print '<tr class="fielddeliverydelay" style="display: none;"><td>'.$langs->trans('AvailabilityPeriod');
 	if (!empty($conf->commande->enabled))
 		print ' ('.$langs->trans('AfterOrder').')';
 	print '</td><td>';
