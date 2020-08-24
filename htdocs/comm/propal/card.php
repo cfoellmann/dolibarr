@@ -1637,7 +1637,7 @@ if ($action == 'create')
 	}
 
 	// Template to use by default
-	print '<tr>';
+	print '<tr style="display: none;">';
 	print '<td>'.$langs->trans("DefaultModel").'</td>';
 	print '<td>';
 	$liste = ModelePDFPropales::liste_modeles($db);
