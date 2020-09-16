@@ -1264,7 +1264,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		}
 
 		// Accountancy codes
-		print '<table class="border centpercent">';
+		print '<table class="border centpercent" style="display: none;">';
 
 		if (!empty($conf->accounting->enabled))
 		{
