@@ -2456,8 +2456,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		// Type + Workforce/Staff
 		$arr = $formcompany->typent_array(1);
 		$object->typent = $arr[$object->typent_code];
-		print '<tr><td>'.$langs->trans("ThirdPartyType").'</td><td>'.$object->typent.'</td>';
-		print '<tr><td>'.$langs->trans("Workforce").'</td><td>'.$object->effectif.'</td></tr>';
+		print '<tr style="display: none;"><td>'.$langs->trans("ThirdPartyType").'</td><td>'.$object->typent.'</td>';
+		print '<tr style="display: none;"><td>'.$langs->trans("Workforce").'</td><td>'.$object->effectif.'</td></tr>';
 
 		print '</table>';
 
@@ -2491,7 +2491,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		print '<tr><td class="titlefield">'.$langs->trans('JuridicalStatus').'</td><td>'.$object->forme_juridique.'</td></tr>';
 
 		// Capital
-		print '<tr><td>'.$langs->trans('Capital').'</td><td>';
+		print '<tr style="display: none;"><td>'.$langs->trans('Capital').'</td><td>';
 		if ($object->capital) print price($object->capital, '', $langs, 0, -1, -1, $conf->currency);
 		else print '&nbsp;';
 		print '</td></tr>';
