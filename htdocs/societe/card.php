@@ -1434,17 +1434,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 			print '</td></tr>';
 		}
 
-		// Type - Workforce/Staff
-		print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'."\n";
-		$sortparam = (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT); // NONE means we keep sort of original array, so we sort on position. ASC, means next function will sort on label.
-		print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 0, 0, 0, '', 0, 0, 0, $sortparam);
-		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-		print '</td>';
-		if ($conf->browser->layout == 'phone') print '</tr><tr>';
-		print '<td>'.$form->editfieldkey('Workforce', 'effectif_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>';
-		print $form->selectarray("effectif_id", $formcompany->effectif_array(0), $object->effectif_id);
-		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-		print '</td></tr>';
+        // Type - Workforce/Staff
+        print '<tr style="display: none;"><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.($conf->browser->layout == 'phone' ? ' colspan="3"': '').'>'."\n";
+        $sortparam = (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT); // NONE means we keep sort of original array, so we sort on position. ASC, means next function will sort on label.
+        print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 0, 0, 0, '', 0, 0, 0, $sortparam);
+        if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+        print '</td>';
+        if ($conf->browser->layout == 'phone') print '</tr><tr style="display: none;">';
+        print '<td>'.$form->editfieldkey('Workforce', 'effectif_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.($conf->browser->layout == 'phone' ? ' colspan="3"': '').'>';
+        print $form->selectarray("effectif_id", $formcompany->effectif_array(0), $object->effectif_id);
+        if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+        print '</td></tr>';
 
 		// Legal Form
 		print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td>';
@@ -1458,7 +1458,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		print '</td></tr>';
 
 		// Capital
-		print '<tr><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
+		print '<tr style="display: none;"><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
 		print '<td colspan="3"><input type="text" name="capital" id="capital" class="maxwidth100" value="'.$object->capital.'"> ';
 		print '<span class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</span></td></tr>';
 
@@ -2058,11 +2058,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 			print '</tr>';
 
 			// Type - Workforce/Staff
-			print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone">';
+			print '<tr style="display: none;"><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone">';
 			print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 0, 0, 0, '', 0, 0, 0, (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT));
 			if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 			print '</td>';
-			if ($conf->browser->layout == 'phone') print '</tr><tr>';
+			if ($conf->browser->layout == 'phone') print '</tr><tr style="display: none;">';
 			print '<td>'.$form->editfieldkey('Workforce', 'effectif_id', '', $object, 0).'</td><td class="maxwidthonsmartphone">';
 			print $form->selectarray("effectif_id", $formcompany->effectif_array(0), $object->effectif_id);
 			if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
@@ -2074,7 +2074,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 			print '</td></tr>';
 
 			// Capital
-			print '<tr><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
+			print '<tr style="display: none;"><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
 			print '<td colspan="3"><input type="text" name="capital" id="capital" size="10" value="';
 			print $object->capital != '' ? dol_escape_htmltag(price($object->capital)) : '';
 			print '"> <font class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</font></td></tr>';
