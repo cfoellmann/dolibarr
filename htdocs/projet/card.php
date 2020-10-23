@@ -533,7 +533,7 @@ if ($action == 'create' && $user->rights->projet->creer)
 	print '</td></tr>';
 
 	// Usage (opp, task, bill time, ...)
-	print '<tr><td class="tdtop">';
+	print '<tr style="display:none;"><td class="tdtop">';
 	print $langs->trans("Usage");
 	print '</td>';
 	print '<td>';
@@ -996,7 +996,7 @@ if ($action == 'create' && $user->rights->projet->creer)
 		print '<table class="border tableforfield" width="100%">';
 
 		// Usage
-		print '<tr><td class="tdtop">';
+		print '<tr style="display:none;"><td class="tdtop">';
 		print $langs->trans("Usage");
 		print '</td>';
 		print '<td>';
