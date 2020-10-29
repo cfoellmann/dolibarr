@@ -1803,6 +1803,19 @@ if ($action == 'create')
 
 	$res = $object->fetch_optionals();
 
+	$nbfreeproduct = 0; // Nb of lins of free products/services
+	$nbproduct     = 0; // Nb of predefined product lines to dispatch (already done or not) if SUPPLIER_ORDER_DISABLE_STOCK_DISPATCH_WHEN_TOTAL_REACHED is off (default)
+
+	foreach ($object->lines as $line) {
+//				dol_syslog('line: '.print_r($line, true), LOG_ALERT);
+		if (empty($line->fk_product)) {
+			$nbfreeproduct++;
+		}
+		if (!empty($line->fk_product)) {
+			$nbproduct++;
+		}
+	}
+
 
 	$head = ordersupplier_prepare_head($object);
 
@@ -2481,7 +2494,7 @@ if ($action == 'create')
 				$labelofbutton = $langs->trans('ReceiveProducts');
 				if ($conf->reception->enabled) $labelofbutton = $langs->trans("CreateReception");
 
-				if (in_array($object->statut, array(3, 4, 5))) {
+				if (in_array($object->statut, array(3, 4)) && ($nbproduct > 0 )) {
 					if ($conf->fournisseur->enabled && $usercanreceived) {
 						print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_URL_ROOT.'/fourn/commande/dispatch.php?id='.$object->id.'">'.$labelofbutton.'</a></div>';
 					} else {
@@ -2503,7 +2516,7 @@ if ($action == 'create')
 			// Classify received (this does not record reception)
 			if ($object->statut == CommandeFournisseur::STATUS_ORDERSENT || $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY)
 			{
-				if ($usercanreceived)
+				if ($usercanreceived && ($nbproduct == 0 || $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY)) //
 				{
 					print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&amp;action=classifyreception#classifyreception">'.$langs->trans("ClassifyReception").'</a></div>';
 				}
