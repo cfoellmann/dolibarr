@@ -592,6 +592,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 								$(\'textarea[name="address"]\').val("'.dol_escape_js($objsoc->address).'");
 								$(\'input[name="zipcode"]\').val("'.dol_escape_js($objsoc->zip).'");
 								$(\'input[name="town"]\').val("'.dol_escape_js($objsoc->town).'");
+								$(\'input[name="phone_pro"]\').val("'.dol_escape_js($objsoc->phone).'");
+								$(\'input[name="email"]\').val("'.dol_escape_js($objsoc->email).'");
 								console.log("Set state_id to '.dol_escape_js($objsoc->state_id).'");
 								$(\'select[name="state_id"]\').val("'.dol_escape_js($objsoc->state_id).'").trigger("change");
 								/* set country at end because it will trigger page refresh */
@@ -919,6 +921,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 								$(\'textarea[name="address"]\').val("'.dol_escape_js($objsoc->address).'");
 								$(\'input[name="zipcode"]\').val("'.dol_escape_js($objsoc->zip).'");
 								$(\'input[name="town"]\').val("'.dol_escape_js($objsoc->town).'");
+								$(\'input[name="phone_pro"]\').val("'.dol_escape_js($objsoc->phone).'");
+								$(\'input[name="email"]\').val("'.dol_escape_js($objsoc->email).'");
 								console.log("Set state_id to '.dol_escape_js($objsoc->state_id).'");
 								$(\'select[name="state_id"]\').val("'.dol_escape_js($objsoc->state_id).'").trigger("change");
 								/* set country at end because it will trigger page refresh */
