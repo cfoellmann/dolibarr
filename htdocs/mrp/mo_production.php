@@ -690,19 +690,20 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		print '<div class="div-table-responsive-no-min">';
 		print '<table class="noborder noshadow centpercent nobottom">';
 
-		print '<tr class="liste_titre">';
-		print '<td>'.$langs->trans("Product").'</td>';
-		print '<td class="right">'.$langs->trans("Qty").'</td>';
-		print '<td class="right">'.$langs->trans("QtyAlreadyConsumed").'</td>';
-		print '<td>';
-		if ($collapse || in_array($action, array('consumeorproduce', 'consumeandproduceall'))) print $langs->trans("Warehouse");
-		print '</td>';
-		if ($conf->productbatch->enabled) {
-			print '<td>';
-			if ($collapse || in_array($action, array('consumeorproduce', 'consumeandproduceall'))) print $langs->trans("Batch");
-			print '</td>';
-		}
-		print '</tr>';
+    	print '<tr class="liste_titre">';
+    	print '<td>'.$langs->trans("Product").'</td>';
+    	print '<td class="right">Lagerplatz</td>';
+    	print '<td class="right">'.$langs->trans("Qty").'</td>';
+    	print '<td class="right">'.$langs->trans("QtyAlreadyConsumed").'</td>';
+    	print '<td>';
+    	if ($collapse || in_array($action, array('consumeorproduce', 'consumeandproduceall'))) print $langs->trans("Warehouse");
+    	print '</td>';
+    	if ($conf->productbatch->enabled) {
+    		print '<td>';
+    		if ($collapse || in_array($action, array('consumeorproduce', 'consumeandproduceall'))) print $langs->trans("Batch");
+    		print '</td>';
+    	}
+    	print '</tr>';
 
 		if ($action == 'addconsumeline') {
 			print '<!-- Add line to consume -->'."\n";
