@@ -2572,7 +2572,7 @@ if ($action == 'create')
 			}
 
 			// Delete
-			if (!empty($usercandelete) || ($object->statut == CommandeFournisseur::STATUS_DRAFT && !empty($usercancreate)))
+			if (($object->statut == CommandeFournisseur::STATUS_DRAFT && !empty($usercancreate))) // !empty($usercandelete) ||
 			{
 				print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&amp;action=delete&amp;token='.newToken().'">'.$langs->trans("Delete").'</a>';
 			}
