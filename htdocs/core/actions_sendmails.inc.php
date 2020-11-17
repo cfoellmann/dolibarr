@@ -176,6 +176,12 @@ if (($action == 'send' || $action == 'relance') && !$_POST['addfile'] && !$_POST
 			$tmparray[] = trim($_POST['sendto']);
 		}
 
+		if (trim($_POST['tomail']))
+		{
+			// Recipients are provided into free text
+			$tmparray[] = trim($_POST['tomail']);
+		}
+
 		if (count($receiver) > 0)
 		{
 			// Recipient was provided from combo list
