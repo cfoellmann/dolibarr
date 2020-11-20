@@ -605,7 +605,7 @@ class FormCompany extends Form
 	 *  @param	string		$morecss		More CSS on select component
 	 * 	@return int 						The selected third party ID
 	 */
-	public function selectCompaniesForNewContact($object, $var_id, $selected = '', $htmlname = 'newcompany', $limitto = '', $forceid = 0, $moreparam = '', $morecss = '')
+	public function selectCompaniesForNewContact($object, $var_id, $selected = '', $htmlname = 'newcompany', $limitto = '', $forceid = 0, $moreparam = '', $morecss = '', $filter = '')
 	{
 		global $conf, $langs;
 
@@ -696,6 +696,9 @@ class FormCompany extends Form
 			$sql = "SELECT s.rowid, s.nom as name FROM";
 			$sql .= " ".MAIN_DB_PREFIX."societe as s";
 			$sql .= " WHERE s.entity IN (".getEntity('societe').")";
+			if ($filter) {
+				$sql .= " AND ".$filter;
+			}
 			// For ajax search we limit here. For combo list, we limit later
 			if (is_array($limitto) && count($limitto))
 			{
