@@ -471,8 +471,8 @@ if (empty($reshook))
 
 				$message .= "\n";
 				$message .= "- ".$langs->transnoentitiesnoconv("Name")." : ".dolGetFirstLastname($expediteur->firstname, $expediteur->lastname)."\n";
-				$message .= "- ".$langs->transnoentitiesnoconv("Period")." : ".dol_print_date($object->date_debut, 'day')." ".$langs->transnoentitiesnoconv("To")." ".dol_print_date($object->date_fin, 'day')."\n";
-				$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."\n\n";
+				$message .= "- ".$langs->transnoentitiesnoconv("Period")." : ".$langs->transnoentitiesnoconv("%s to %s", dol_print_date($object->date_debut, 'day'), dol_print_date($object->date_fin, 'day'))."\n";
+				$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."&entity=2\n\n";
 				$message .= "\n";
 
 				$trackid = 'leav'.$object->id;
@@ -597,7 +597,7 @@ if (empty($reshook))
 
 					$message .= "- ".$langs->transnoentitiesnoconv("ValidatedBy")." : ".dolGetFirstLastname($expediteur->firstname, $expediteur->lastname)."\n";
 
-					$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."\n\n";
+					$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."&entity=2\n\n";
 					$message .= "\n";
 
 					$trackid = 'leav'.$object->id;
@@ -682,7 +682,7 @@ if (empty($reshook))
 
 						$message .= "- ".$langs->transnoentitiesnoconv("ModifiedBy")." : ".dolGetFirstLastname($expediteur->firstname, $expediteur->lastname)."\n";
 
-						$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."\n\n";
+						$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."&entity=2\n\n";
 						$message .= "\n";
 
 						$trackid = 'leav'.$object->id;
@@ -828,7 +828,7 @@ if (empty($reshook))
 				$message .= $langs->transnoentities("HolidaysCanceledBody", dol_print_date($object->date_debut, 'day'), dol_print_date($object->date_fin, 'day'))."\n";
 				$message .= "- ".$langs->transnoentitiesnoconv("ModifiedBy")." : ".dolGetFirstLastname($expediteur->firstname, $expediteur->lastname)."\n";
 
-				$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."\n\n";
+				$message .= "- ".$langs->transnoentitiesnoconv("Link")." : ".$dolibarr_main_url_root."/holiday/card.php?id=".$object->id."&entity=2\n\n";
 				$message .= "\n";
 
 				$trackid = 'leav'.$object->id;
@@ -1037,8 +1037,10 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add')
 			$tmpdate = dol_mktime(0, 0, 0, GETPOST('date_debut_month', 'int'), GETPOST('date_debut_day', 'int'), GETPOST('date_debut_year', 'int'));
 			print $form->selectDate($tmpdate, 'date_debut_', 0, 0, 0, '', 1, 1);
 		}
-		print ' &nbsp; &nbsp; ';
-		print $form->selectarray('starthalfday', $listhalfday, (GETPOST('starthalfday', 'alpha') ?GETPOST('starthalfday', 'alpha') : 'morning'));
+		if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+			print ' &nbsp; &nbsp; ';
+			print $form->selectarray('starthalfday', $listhalfday, (GETPOST('starthalfday', 'alpha') ?GETPOST('starthalfday', 'alpha') : 'morning'));
+		}
 		print '</td>';
 		print '</tr>';
 
@@ -1055,8 +1057,10 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add')
 			$tmpdate = dol_mktime(0, 0, 0, GETPOST('date_fin_month', 'int'), GETPOST('date_fin_day', 'int'), GETPOST('date_fin_year', 'int'));
 			print $form->selectDate($tmpdate, 'date_fin_', 0, 0, 0, '', 1, 1);
 		}
-		print ' &nbsp; &nbsp; ';
-		print $form->selectarray('endhalfday', $listhalfday, (GETPOST('endhalfday', 'alpha') ?GETPOST('endhalfday', 'alpha') : 'afternoon'));
+		if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+			print ' &nbsp; &nbsp; ';
+			print $form->selectarray( 'endhalfday', $listhalfday, ( GETPOST( 'endhalfday', 'alpha' ) ? GETPOST( 'endhalfday', 'alpha' ) : 'afternoon' ) );
+		}
 		print '</td>';
 		print '</tr>';
 
@@ -1218,8 +1222,10 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add')
 					print $form->textwithpicto($langs->trans('DateDebCP'), $langs->trans("FirstDayOfHoliday"));
 					print '</td>';
 					print '<td>'.dol_print_date($object->date_debut, 'day');
-					print ' &nbsp; &nbsp; ';
-					print '<span class="opacitymedium">'.$langs->trans($listhalfday[$starthalfday]).'</span>';
+					if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+						print ' &nbsp; &nbsp; ';
+						print '<span class="opacitymedium">' . $langs->trans( $listhalfday[ $starthalfday ] ) . '</span>';
+					}
 					print '</td>';
 					print '</tr>';
 				} else {
@@ -1229,8 +1235,10 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add')
 					print '</td>';
 					print '<td>';
 					print $form->selectDate($object->date_debut, 'date_debut_');
-					print ' &nbsp; &nbsp; ';
-					print $form->selectarray('starthalfday', $listhalfday, (GETPOST('starthalfday') ?GETPOST('starthalfday') : $starthalfday));
+					if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+						print ' &nbsp; &nbsp; ';
+						print $form->selectarray( 'starthalfday', $listhalfday, ( GETPOST( 'starthalfday' ) ? GETPOST( 'starthalfday' ) : $starthalfday ) );
+					}
 					print '</td>';
 					print '</tr>';
 				}
@@ -1242,8 +1250,10 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add')
 					print $form->textwithpicto($langs->trans('DateFinCP'), $langs->trans("LastDayOfHoliday"));
 					print '</td>';
 					print '<td>'.dol_print_date($object->date_fin, 'day');
-					print ' &nbsp; &nbsp; ';
-					print '<span class="opacitymedium">'.$langs->trans($listhalfday[$endhalfday]).'</span>';
+					if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+						print ' &nbsp; &nbsp; ';
+						print '<span class="opacitymedium">' . $langs->trans( $listhalfday[ $endhalfday ] ) . '</span>';
+					}
 					print '</td>';
 					print '</tr>';
 				} else {
@@ -1253,8 +1263,10 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add')
 					print '</td>';
 					print '<td>';
 					print $form->selectDate($object->date_fin, 'date_fin_');
-					print ' &nbsp; &nbsp; ';
-					print $form->selectarray('endhalfday', $listhalfday, (GETPOST('endhalfday') ?GETPOST('endhalfday') : $endhalfday));
+					if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+						print ' &nbsp; &nbsp; ';
+						print $form->selectarray( 'endhalfday', $listhalfday, ( GETPOST( 'endhalfday' ) ? GETPOST( 'endhalfday' ) : $endhalfday ) );
+					}
 					print '</td>';
 					print '</tr>';
 				}
@@ -1270,7 +1282,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add')
 				print $form->textwithpicto($langs->trans('NbUseDaysCP'), $htmlhelp);
 				print '</td>';
 				print '<td>';
-				print num_open_day($object->date_debut_gmt, $object->date_fin_gmt, 0, 1, $object->halfday);
+				print num_open_day($object->date_debut_gmt, $object->date_fin_gmt, 0, 1, $object->halfday) . " &nbsp; &nbsp;  (TODO: Resturlaub nach Genehmigung)";
 				print '</td>';
 				print '</tr>';
 

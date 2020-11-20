@@ -719,7 +719,9 @@ if ($resql)
 			{
 				print '<td class="center">';
 				print dol_print_date($db->jdate($obj->date_debut), 'day');
-				print ' <span class="opacitymedium nowraponall">('.$langs->trans($listhalfday[$starthalfday]).')</span>';
+				if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+					print ' <span class="opacitymedium nowraponall">(' . $langs->trans( $listhalfday[ $starthalfday ] ) . ')</span>';
+				}
 				print '</td>';
 				if (!$i) $totalarray['nbfield']++;
 			}
@@ -727,7 +729,9 @@ if ($resql)
 			{
 				print '<td class="center">';
 				print dol_print_date($db->jdate($obj->date_fin), 'day');
-				print ' <span class="opacitymedium nowraponall">('.$langs->trans($listhalfday[$endhalfday]).')</span>';
+				if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+					print ' <span class="opacitymedium nowraponall">(' . $langs->trans( $listhalfday[ $endhalfday ] ) . ')</span>';
+				}
 				print '</td>';
 				if (!$i) $totalarray['nbfield']++;
 			}

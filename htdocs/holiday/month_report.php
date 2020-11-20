@@ -317,14 +317,18 @@ else {
 		if (!empty($arrayfields['cp.date_debut']['checked']))
 		{
 			print '<td class="center">'.dol_print_date($db->jdate($obj->date_debut), 'day');
-			print ' <span class="opacitymedium">('.$langs->trans($listhalfday[$starthalfday]).')</span>';
+			if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+				print ' <span class="opacitymedium">(' . $langs->trans( $listhalfday[ $starthalfday ] ) . ')</span>';
+			}
 			print '</td>';
 		}
 
 		if (!empty($arrayfields['cp.date_fin']['checked']))
 		{
 			print '<td class="center">'.dol_print_date($db->jdate($obj->date_fin), 'day');
-			print ' <span class="opacitymedium">('.$langs->trans($listhalfday[$endhalfday]).')</span>';
+			if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+				print ' <span class="opacitymedium">(' . $langs->trans( $listhalfday[ $endhalfday ] ) . ')</span>';
+			}
 			print '</td>';
 		}
 
@@ -333,14 +337,18 @@ else {
 		if (!empty($arrayfields['date_start_month']['checked']))
 		{
 			print '<td class="center">'.dol_print_date($date_start_inmonth, 'day');
-			print ' <span class="opacitymedium">('.$langs->trans($listhalfday[$starthalfdayinmonth]).')</span>';
+			if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+				print ' <span class="opacitymedium">(' . $langs->trans( $listhalfday[ $starthalfdayinmonth ] ) . ')</span>';
+			}
 			print '</td>';
 		}
 
 		if (!empty($arrayfields['date_end_month']['checked']))
 		{
 			print '<td class="center">'.dol_print_date($date_end_inmonth, 'day');
-			print ' <span class="opacitymedium">('.$langs->trans($listhalfday[$endhalfdayinmonth]).')</span>';
+			if ( empty($conf->global->HOLIDAY_NOHALFDAY) ) {
+				print ' <span class="opacitymedium">(' . $langs->trans( $listhalfday[ $endhalfdayinmonth ] ) . ')</span>';
+			}
 			print '</td>';
 		}
 
