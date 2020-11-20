@@ -701,6 +701,24 @@ function num_public_holiday($timestampStart, $timestampEnd, $country_code = '', 
 			// Easter (monday)
 		}
 
+		if (in_array('easterfriday', $specialdayrule))
+		{
+			// Calculation for "Good Friday", the friday before easter date
+			$date_paques = easter_date($annee);
+			$date_lundi_paques = mktime(
+				date("H", $date_paques),
+				date("i", $date_paques),
+				date("s", $date_paques),
+				date("m", $date_paques),
+				date("d", $date_paques) - 2,
+				date("Y", $date_paques)
+			);
+			$jour_lundi_ascension = date("d", $date_lundi_paques);
+			$mois_lundi_ascension = date("m", $date_lundi_paques);
+			if ($jour_lundi_ascension == $jour && $mois_lundi_ascension == $mois) $ferie = true;
+			// Good Friday (friday)
+		}
+
 		if (in_array('ascension', $specialdayrule))
 		{
 			// Calcul du jour de l'ascension (39 days after easter day)
