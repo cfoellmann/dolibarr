@@ -2613,6 +2613,10 @@ class CommandeFournisseur extends CommonOrder
 			// redefine quantity according to packaging
 			if (!empty($conf->global->PRODUCT_USE_SUPPLIER_PACKAGING))
 			{
+//				if ($conf->entity == 2) {
+					if (empty($this->line->packaging)) $this->line->packaging = 1;
+//				}
+
 				if ($qty < $this->line->packaging)
 				{
 					$qty = $this->line->packaging;
