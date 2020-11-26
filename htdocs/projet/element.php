@@ -203,15 +203,15 @@ if (!empty($conf->global->PROJECT_USE_OPPORTUNITIES))
 	if ($code) print $langs->trans("OppStatus".$code);
 	print '</td></tr>';
 
-	// Opportunity percent
-	print '<tr><td>'.$langs->trans("OpportunityProbability").'</td><td>';
-	if (strcmp($object->opp_percent, '')) print price($object->opp_percent, '', $langs, 1, 0).' %';
-	print '</td></tr>';
+    // Opportunity percent
+    print '<tr style="display: none;"><td>'.$langs->trans("OpportunityProbability").'</td><td>';
+    if (strcmp($object->opp_percent, '')) print price($object->opp_percent, '', $langs, 1, 0).' %';
+    print '</td></tr>';
 
-	// Opportunity Amount
-	print '<tr><td>'.$langs->trans("OpportunityAmount").'</td><td>';
-	if (strcmp($object->opp_amount, '')) print price($object->opp_amount, '', $langs, 1, 0, 0, $conf->currency);
-	print '</td></tr>';
+    // Opportunity Amount
+    print '<tr style="display: none;"><td>'.$langs->trans("OpportunityAmount").'</td><td>';
+    if (strcmp($object->opp_amount, '')) print price($object->opp_amount, '', $langs, 1, 0, 0, $conf->currency);
+    print '</td></tr>';
 }
 
 // Date start - end
@@ -225,7 +225,7 @@ if ($object->hasDelay()) print img_warning("Late");
 print '</td></tr>';
 
 // Budget
-print '<tr><td>'.$langs->trans("Budget").'</td><td>';
+print '<tr style="display: none;"><td>'.$langs->trans("Budget").'</td><td>';
 if (strcmp($object->budget_amount, '')) print price($object->budget_amount, '', $langs, 1, 0, 0, $conf->currency);
 print '</td></tr>';
 
