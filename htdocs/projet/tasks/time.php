@@ -662,7 +662,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0)
 			print '</td></tr>';
 
 			// Budget
-			print '<tr><td>'.$langs->trans("Budget").'</td><td>';
+			print '<tr style="display: none;"><td>'.$langs->trans("Budget").'</td><td>';
 			if (strcmp($projectstatic->budget_amount, '')) print price($projectstatic->budget_amount, '', $langs, 1, 0, 0, $conf->currency);
 			print '</td></tr>';
 
