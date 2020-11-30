@@ -711,6 +711,7 @@ class CommandeFournisseur extends CommonOrder
 			$this->statutshort[6] = 'StatusSupplierOrderCanceledShort';
 			$this->statutshort[7] = 'StatusSupplierOrderCanceledShort';
 			$this->statutshort[9] = 'StatusSupplierOrderRefusedShort';
+			$this->statutshort[34] = 'Bestellt + Teilweise erhalten';
 		}
 
 		$statustrans = array(

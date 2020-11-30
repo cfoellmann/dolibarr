@@ -50,9 +50,10 @@ class FormOrder extends Form
 			'2' => '2',
 			'3' => '3',
 			'4' => '4',
+			'34' => '3,4',
 			'5' => '5',
 			'6' => '6,7',
-			'9' => '9'
+		'9' => '9'
 		);
 
 		$tmpsupplierorder = new CommandeFournisseur($this->db);
