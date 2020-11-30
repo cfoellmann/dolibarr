@@ -3284,6 +3284,7 @@ if ($action == 'create')
 	}
 
 	// Template invoice
+	if (false):
 	print '<div class="tagtr listofinvoicetype"><div class="tagtd listofinvoicetype">';
 	$tmp = '<input type="radio" name="type" id="radio_template" value="0" disabled> ';
 	$text = '<label>'.$tmp.$langs->trans("RepeatableInvoice").'</label> ';
@@ -3291,7 +3292,7 @@ if ($action == 'create')
 	$desc = $form->textwithpicto($text, $langs->transnoentities("YouMustCreateStandardInvoiceFirstDesc"), 1, 'help', '', 0, 3);
 	print $desc;
 	print '</div></div>';
-
+	endif;
 	print '</div>';
 
 
@@ -5271,7 +5272,7 @@ if ($action == 'create')
 			{
 				print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?facid='.$object->id.'&amp;action=clone&amp;object=invoice">'.$langs->trans("ToClone").'</a>';
 			}
-
+			if (false):
 			// Clone as predefined / Create template
 			if (($object->type == Facture::TYPE_STANDARD || $object->type == Facture::TYPE_DEPOSIT || $object->type == Facture::TYPE_PROFORMA) && $object->statut == 0 && $usercancreate)
 			{
@@ -5280,7 +5281,7 @@ if ($action == 'create')
 					print '<a class="butAction" href="'.DOL_URL_ROOT.'/compta/facture/card-rec.php?facid='.$object->id.'&amp;action=create">'.$langs->trans("ChangeIntoRepeatableInvoice").'</a>';
 				}
 			}
-
+			endif;
 			// Remove situation from cycle
 			if (in_array($object->statut, array(Facture::STATUS_CLOSED, Facture::STATUS_VALIDATED))
 			    && $object->type == Facture::TYPE_SITUATION
