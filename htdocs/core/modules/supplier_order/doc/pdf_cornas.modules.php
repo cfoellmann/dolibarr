@@ -515,6 +515,14 @@ class pdf_cornas extends ModelePDFSuppliersOrders
 					$posYAfterImage = 0;
 					$posYAfterDescription = 0;
 
+					// Position
+					if ($this->getColumnStatus('rang'))
+					{
+						$rang = $object->lines[$i]->rang * 10;
+						$this->printStdColumnContent($pdf, $curY, 'rang', $rang);
+						$nexY = max($pdf->GetY(), $nexY);
+					}
+
 					// We start with Photo of product line
 					if (!empty($imglinesize['width']) && !empty($imglinesize['height']) && ($curY + $imglinesize['height']) > ($this->page_hauteur - ($heightforfooter + $heightforfreetext + $heightforinfotot)))	// If photo too high, we moved completely on new page
 					{

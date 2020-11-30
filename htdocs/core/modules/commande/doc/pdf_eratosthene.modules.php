@@ -571,6 +571,14 @@ class pdf_eratosthene extends ModelePDFCommandes
 					$posYAfterImage = 0;
 					$posYAfterDescription = 0;
 
+					// Position
+					if ($this->getColumnStatus('rang'))
+					{
+						$rang = $object->lines[$i]->rang * 10;
+						$this->printStdColumnContent($pdf, $curY, 'rang', $rang);
+						$nexY = max($pdf->GetY(), $nexY);
+					}
+
 					if ($this->getColumnStatus('photo'))
 					{
 						// We start with Photo of product line
