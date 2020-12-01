@@ -48,7 +48,7 @@ print "<thead>\n";
 print '<tr class="liste_titre nodrag nodrop">';
 
 // Adds a line numbering column
-if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) print '<td class="linecolnum center">&nbsp;</td>';
+if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) print '<td class="linecolnum center">'.$langs->trans("LineRank").'</td>';
 
 // Description
 print '<td class="linecoldescription">'.$langs->trans('Description').'</td>';
