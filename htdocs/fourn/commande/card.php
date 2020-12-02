@@ -1808,10 +1808,10 @@ if ($action == 'create')
 
 	foreach ($object->lines as $line) {
 //				dol_syslog('line: '.print_r($line, true), LOG_ALERT);
-		if (empty($line->fk_product)) {
+		if (empty($line->fk_product) || $line->product_type = 1) {
 			$nbfreeproduct++;
 		}
-		if (!empty($line->fk_product)) {
+		if (!empty($line->fk_product) && ! ($line->product_type = 1)) {
 			$nbproduct++;
 		}
 	}
@@ -2516,7 +2516,7 @@ if ($action == 'create')
 			// Classify received (this does not record reception)
 			if ($object->statut == CommandeFournisseur::STATUS_ORDERSENT || $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY)
 			{
-				if ($usercanreceived && ($nbproduct == 0 || $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY)) //
+				if ($usercanreceived && ($nbproduct == 0 || $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY || $nbfreeproduct > 0 )) //
 				{
 					print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&amp;action=classifyreception#classifyreception">'.$langs->trans("ClassifyReception").'</a></div>';
 				}
