@@ -1394,8 +1394,8 @@ class Holiday extends CommonObject
 			$monthLastUpdate = $lastUpdate[4].$lastUpdate[5];
 			//print 'month: '.$month.' lastUpdate:'.$lastUpdate.' monthLastUpdate:'.$monthLastUpdate;exit;
 
-			// Si la date du mois n'est pas la même que celle sauvegardée, on met à jour le timestamp
-			if ($month != $monthLastUpdate)
+			// If the date of the month is not the same as the one saved, the timestamp is updated
+			if ($month != $monthLastUpdate && false)
 			{
 				$this->db->begin();
 
@@ -1420,6 +1420,7 @@ class Holiday extends CommonObject
 					$newSolde = $nowHoliday + $nbDaysToAdd;
 
 					// We add a log for each user
+					/**
 					$this->addLogCP($user->id, $userCounter['rowid'], $langs->trans('HolidaysMonthlyUpdate'), $newSolde, $userCounter['type']);
 
 					$result = $this->updateSoldeCP($userCounter['rowid'], $newSolde, $userCounter['type'], $langs->trans('HolidaysMonthlyUpdate'));
@@ -1429,6 +1430,7 @@ class Holiday extends CommonObject
 						$error++;
 						break;
 					}
+					 */
 				}
 
 				if (!$error)
