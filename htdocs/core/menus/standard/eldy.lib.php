@@ -1714,10 +1714,11 @@ function print_left_eldy_menu($db, $menu_array_before, $menu_array_after, &$tabM
 					$newmenu->add('/projet/list.php?mainmenu=project&amp;leftmenu=list&search_usage_opportunity=1&search_status=99', $langs->trans("List"), 2, $showmode);
 				}
 
-				$newmenu->add('/projet/list.php?mainmenu=project&leftmenu=projets&search_status=99&search_options_project_type=std', $langs->trans("Standard"), 2, $showmode);
-				$newmenu->add('/projet/list.php?mainmenu=project&leftmenu=projets&search_status=99&search_options_project_type=mpx', $langs->trans("MPX"), 2, $showmode);
-				$newmenu->add('/projet/list.php?mainmenu=project&leftmenu=projets&search_status=99&search_options_project_type=schulung', $langs->trans("Schulungen"), 2, $showmode);
-
+				if ( $conf->entity == 2 ) {
+					$newmenu->add('/projet/list.php?mainmenu=project&leftmenu=projets&search_status=99&search_options_project_type=std', $langs->trans("Standard"), 2, $showmode);
+					$newmenu->add('/projet/list.php?mainmenu=project&leftmenu=projets&search_status=99&search_options_project_type=mpx', $langs->trans("MPX"), 2, $showmode);
+					$newmenu->add('/projet/list.php?mainmenu=project&leftmenu=projets&search_status=99&search_options_project_type=schulung', $langs->trans("Schulungen"), 2, $showmode);
+				}
 				$newmenu->add("/projet/stats/index.php?leftmenu=projects", $langs->trans("Statistics"), 1, $user->rights->projet->lire);
 
 				// Categories
