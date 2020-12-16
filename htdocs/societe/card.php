@@ -2479,7 +2479,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		print '</td></tr>';
 
 		// Third-Party Type
-		print '<tr><td>';
+		print '<tr style="display: none;"><td>';
 		print '<table class="nobordernopadding" width="100%"><tr><td>'.$langs->trans('ThirdPartyType').'</td>';
 		if ($action != 'editthirdpartytype' && $user->rights->societe->creer) print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editthirdpartytype&amp;socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
 		print '</tr></table>';
@@ -2489,7 +2489,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		print '</td></tr>';
 
 		// Workforce/Staff
-		print '<tr><td>'.$langs->trans("Workforce").'</td><td>'.$object->effectif.'</td></tr>';
+		print '<tr style="display: none;"><td>'.$langs->trans("Workforce").'</td><td>'.$object->effectif.'</td></tr>';
 
 		print '</table>';
 		print '</div>';
@@ -2523,7 +2523,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		print '<tr><td class="titlefield">'.$langs->trans('JuridicalStatus').'</td><td>'.$object->forme_juridique.'</td></tr>';
 
 		// Capital
-		print '<tr><td>'.$langs->trans('Capital').'</td><td>';
+		print '<tr style="display: none;"><td>'.$langs->trans('Capital').'</td><td>';
 		if ($object->capital) print price($object->capital, '', $langs, 0, -1, -1, $conf->currency);
 		else print '&nbsp;';
 		print '</td></tr>';
