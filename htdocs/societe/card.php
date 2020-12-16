@@ -1292,7 +1292,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 		}
 
 		// Status
-		print '<tr><td>'.$form->editfieldkey('Status', 'status', '', $object, 0).'</td><td colspan="3">';
+		print '<tr style="display: none;"><td>'.$form->editfieldkey('Status', 'status', '', $object, 0).'</td><td colspan="3">';
 		print $form->selectarray('status', array('0'=>$langs->trans('ActivityCeased'), '1'=>$langs->trans('InActivity')), 1, 0, 0, 0, '', 0, 0, 0, '', 'minwidth100', 1);
 		print '</td></tr>';
 
@@ -1382,7 +1382,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
 			if ($idprof != '-')	{
 				$key = 'idprof'.$i;
 
-				if (($j % $NBCOLS) == 0) print '<tr>';
+				if (($j % $NBCOLS) == 0) print '<tr style="display:none;">';
 
 				$idprof_mandatory = 'SOCIETE_IDPROF'.($i).'_MANDATORY';
 				print '<td>'.$form->editfieldkey($idprof, $key, '', $object, 0, 'string', '', (empty($conf->global->$idprof_mandatory) ? 0 : 1)).'</td><td>';
