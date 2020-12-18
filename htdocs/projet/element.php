@@ -616,6 +616,8 @@ $langs->loadLangs(array("suppliers", "bills", "orders", "proposals", "margins"))
 
 if (!empty($conf->stock->enabled)) $langs->load('stocks');
 
+if (!empty($user->rights->wusshared->project_costs->read)) :
+
 print load_fiche_titre($langs->trans("Profit"), '', 'title_accountancy');
 
 print '<table class="noborder centpercent">';
@@ -839,7 +841,7 @@ print "</table>";
 print '<br><br>';
 print '<br>';
 
-
+endif; // END: $user->rights->wusshared->project_costs->read
 
 // Detail
 foreach ($listofreferent as $key => $value)
@@ -871,6 +873,10 @@ foreach ($listofreferent as $key => $value)
 
 	$exclude_select_element = array('payment_various');
 	if (!empty($value['exclude_select_element'])) $exclude_select_element[] = $value['exclude_select_element'];
+
+	if (empty($user->rights->wusshared->project_costs->read)) {
+		$value['disableamount'] = 1;
+	}
 
 	if ($qualified) {
 		// If we want the project task array to have details of users
