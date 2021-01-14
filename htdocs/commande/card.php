@@ -243,7 +243,7 @@ if (empty($reshook))
 	elseif ($action == 'add' && $usercancreate)
 	{
 		$datecommande = dol_mktime(12, 0, 0, GETPOST('remonth'), GETPOST('reday'), GETPOST('reyear'));
-		$datelivraison = dol_mktime(12, 0, 0, GETPOST('liv_month'), GETPOST('liv_day'), GETPOST('liv_year'));
+		$datelivraison = dol_mktime(12, 0, 0, GETPOST('date_deliverymonth'), GETPOST('date_deliveryday'), GETPOST('date_deliveryyear'));
 		$selectedLines = GETPOST('toselect', 'array');
 
 		if ($datecommande == '') {
