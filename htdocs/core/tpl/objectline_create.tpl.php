@@ -154,7 +154,8 @@ if ($nolinesbefore) {
 
 		<?php
 		$freelines = false;
-		if (empty($conf->global->MAIN_DISABLE_FREE_LINES))
+		$is_vatex_ae = in_array($object->array_options['options_invoicetypecode'], array('875','876','877'));
+		if (empty($conf->global->MAIN_DISABLE_FREE_LINES) && !$is_vatex_ae)
 		{
 			$freelines = true;
 			$forceall = 1; // We always force all type for free lines (module product or service means we use predefined product or service)
