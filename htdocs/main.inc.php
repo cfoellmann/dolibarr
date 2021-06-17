@@ -2220,7 +2220,8 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
  *
  * @return  string                  HTML content
  */
-function top_menu_quickadd() {
+function top_menu_quickadd()
+{
 	global $langs;
 
 	$html = '';
@@ -2265,7 +2266,8 @@ function top_menu_quickadd() {
 	return $html;
 }
 
-function printDropdownQuickadd() {
+function printDropdownQuickadd()
+{
 
 	global $conf, $user, $langs, $hookmanager;
 
