@@ -2266,113 +2266,125 @@ function top_menu_quickadd()
 	return $html;
 }
 
+/**
+ * Generate list of quickadd items
+ *
+ * @return string HTML output
+ */
 function printDropdownQuickadd()
 {
 
 	global $conf, $user, $langs, $hookmanager;
+
+	$items = array(
+		array(
+			"url" => "/societe/card.php?action=create",
+			"title" => "MenuNewThirdParty@companies",
+			"name" => "ThirdParty@companies",
+			"picto" => "object_company",
+			"activation" => !empty($conf->societe->enabled) && $user->rights->societe->creer, // vs hooking
+			"position" => 1,
+		),
+		array(
+			"url" => "/contact/card.php?action=create",
+			"title" => "NewContactAddress@companies",
+			"name" => "Contact@companies",
+			"picto" => "object_contact",
+			"activation" => !empty($conf->societe->enabled) && $user->rights->societe->contact->creer, // vs hooking
+			"position" => 2,
+		),
+		array(
+			"url" => "/comm/propal/card.php?action=create",
+			"title" => "NewPropal@propal",
+			"name" => "Proposal@propal",
+			"picto" => "object_propal",
+			"activation" => !empty($conf->propal->enabled) && $user->rights->propale->creer, // vs hooking
+			"position" => 3,
+		),
+
+		array(
+			"url" => "/commande/card.php?action=create",
+			"title" => "NewOrder@orders",
+			"name" => "Order@orders",
+			"picto" => "object_order",
+			"activation" => !empty($conf->commande->enabled) && $user->rights->commande->creer, // vs hooking
+			"position" => 4,
+		),
+		array(
+			"url" => "/compta/facture/card.php?action=create",
+			"title" => "NewBill@bills",
+			"name" => "Bill@bills",
+			"picto" => "object_bill",
+			"activation" => !empty($conf->facture->enabled) && $user->rights->facture->creer, // vs hooking
+			"position" => 5,
+		),
+		array(
+			"url" => "/compta/facture/card.php?action=create",
+			"title" => "NewContractSubscription@contracts",
+			"name" => "Contract@contracts",
+			"picto" => "object_contract",
+			"activation" => !empty($conf->contrat->enabled) && $user->rights->contrat->creer, // vs hooking
+			"position" => 6,
+		),
+		array(
+			"url" => "/supplier_proposal/card.php?action=create",
+			"title" => "SupplierProposalNew@supplier_proposal",
+			"name" => "SupplierProposal@supplier_proposal",
+			"picto" => "object_propal",
+			"activation" => !empty($conf->supplier_proposal->enabled) && $user->rights->supplier_proposal->creer, // vs hooking
+			"position" => 7,
+		),
+		array(
+			"url" => "/fourn/commande/card.php?action=create",
+			"title" => "NewSupplierOrderShort@orders",
+			"name" => "SupplierOrder@orders",
+			"picto" => "object_order",
+			"activation" => (!empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD) && $user->rights->fournisseur->commande->creer) || (!empty($conf->supplier_order->enabled) && $user->rights->supplier_order->creer), // vs hooking
+			"position" => 8,
+		),
+		array(
+			"url" => "/fourn/facture/card.php?action=create",
+			"title" => "NewBill@bills",
+			"name" => "SupplierBill@bills",
+			"picto" => "object_bill",
+			"activation" => (!empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD) && $user->rights->fournisseur->facture->creer) || (!empty($conf->supplier_invoice->enabled) && $user->rights->supplier_invoice->creer), // vs hooking
+			"position" => 9,
+		),
+		array(
+			"url" => "/product/card.php?action=create&amp;type=0",
+			"title" => "NewProduct@products",
+			"name" => "Product@products",
+			"picto" => "object_product",
+			"activation" => !empty($conf->product->enabled) && $user->rights->produit->creer, // vs hooking
+			"position" => 10,
+		),
+		array(
+			"url" => "/product/card.php?action=create&amp;type=1",
+			"title" => "NewService@products",
+			"name" => "Service@products",
+			"picto" => "object_service",
+			"activation" => !empty($conf->service->enabled) && $user->rights->service->creer, // vs hooking
+			"position" => 11,
+		),
+
+	);
 
 	$dropDownQuickAddHtml = '';
 
 	// Define $dropDownQuickAddHtml
 	$dropDownQuickAddHtml .= '<div class="quickadd-body dropdown-body">';
 	$dropDownQuickAddHtml .= '<div class="dropdown-quickadd-list">';
-	if (!empty($conf->societe->enabled) && $user->rights->societe->creer) {
-		$langs->load("companies");
-		$dropDownQuickAddHtml .= '
-                <!-- Thirdparty link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/societe/card.php?action=create" title="'.$langs->trans("MenuNewThirdParty").'">
-                    '. img_picto('', 'object_company') . ' ' . $langs->trans("ThirdParty") .'</a>
-                ';
-	}
 
-	if (!empty($conf->societe->enabled) && $user->rights->societe->contact->creer) {
-		$langs->load("companies");
-		$dropDownQuickAddHtml .= '
-                <!-- Contact link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/contact/card.php?action=create" title="'.$langs->trans("NewContactAddress").'">
-                    '. img_picto('', 'object_contact') . ' ' . $langs->trans("Contact") .'</a>
-                ';
-	}
+	$itemHtml = "";
 
-	if (!empty($conf->propal->enabled) && $user->rights->propale->creer) {
-		$langs->load("propal");
+	foreach ( $items as $item ) {
+		if( !$item['activation'] ) continue;
+		$langs->load( explode( '@', $item['title'] )[1] );
+		$langs->load( explode( '@', $item['name'] )[1] );
 		$dropDownQuickAddHtml .= '
-                <!-- Propal link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/comm/propal/card.php?action=create" title="'.$langs->trans("NewPropal").'">
-                    '. img_picto('', 'object_propal') . ' ' . $langs->trans("Proposal") .'</a>
-                ';
-	}
-
-	if (!empty($conf->commande->enabled) && $user->rights->commande->creer) {
-		$langs->load("orders");
-		$dropDownQuickAddHtml .= '
-                <!-- Order link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/commande/card.php?action=create" title="'.$langs->trans("NewOrder").'">
-                    '. img_picto('', 'object_order') . ' ' . $langs->trans("Order") .'</a>
-                ';
-	}
-
-	if (!empty($conf->facture->enabled) && $user->rights->facture->creer) {
-		$langs->load("bills");
-		$dropDownQuickAddHtml .= '
-                <!-- Invoice link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/compta/facture/card.php?action=create" title="'.$langs->trans("NewBill").'">
-                    '. img_picto('', 'object_bill') . ' ' . $langs->trans("Bill") .'</a>
-                ';
-	}
-
-	if (!empty($conf->contrat->enabled) && $user->rights->contrat->creer) {
-		$langs->load("contracts");
-		$dropDownQuickAddHtml .= '
-                <!-- Contract link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/compta/facture/card.php?action=create" title="'.$langs->trans("NewContractSubscription").'">
-                    '. img_picto('', 'object_contract') . ' ' . $langs->trans("Contract") .'</a>
-                ';
-	}
-
-	if (!empty($conf->supplier_proposal->enabled) && $user->rights->supplier_proposal->creer) {
-		$langs->load("supplier_proposal");
-		$dropDownQuickAddHtml .= '
-                <!-- Supplier proposal link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/supplier_proposal/card.php?action=create" title="'.$langs->trans("NewAskPrice").'">
-                    '. img_picto('', 'object_propal') . ' ' . $langs->trans("AskPrice") .'</a>
-                ';
-	}
-
-	if ((!empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD) && $user->rights->fournisseur->commande->creer) || (!empty($conf->supplier_order->enabled) && $user->rights->supplier_order->creer)) {
-		$langs->load("orders");
-		$dropDownQuickAddHtml .= '
-                <!-- Supplier order link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/fourn/commande/card.php?action=create" title="'.$langs->trans("NewSupplierOrderShort").'">
-                    '. img_picto('', 'object_order') . ' ' . $langs->trans("SupplierOrder") .'</a>
-                ';
-	}
-
-	if ((!empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD) && $user->rights->fournisseur->facture->creer) || (!empty($conf->supplier_invoice->enabled) && $user->rights->supplier_invoice->creer)) {
-		$langs->load("bills");
-		$dropDownQuickAddHtml .= '
-                <!-- Supplier invoice link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/fourn/facture/card.php?action=create" title="'.$langs->trans("NewBill").'">
-                    '. img_picto('', 'object_bill') . ' ' . $langs->trans("SupplierBill") .'</a>
-                ';
-	}
-
-	if (!empty($conf->product->enabled) && $user->rights->produit->creer) {
-		$langs->load("products");
-		$dropDownQuickAddHtml .= '
-                <!-- Product link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/product/card.php?action=create&amp;type=0" title="'.$langs->trans("NewProduct").'">
-                    '. img_picto('', 'object_product') . ' ' . $langs->trans("Product") .'</a>
-                ';
-	}
-
-	if (!empty($conf->service->enabled) && $user->rights->service->creer) {
-		$langs->load("products");
-		$dropDownQuickAddHtml .= '
-                <!-- Service link -->
-                    <a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.'/product/card.php?action=create&amp;type=1" title="'.$langs->trans("NewService").'">
-                    '. img_picto('', 'object_service') . ' ' . $langs->trans("Service") .'</a>
-                ';
+			<a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.$item['url'].'" title="'.$langs->trans(explode( '@', $item['title'] )[0]).'">
+			'. img_picto('', $item['picto'], 'style="width:18px;"') . ' ' . $langs->trans(explode( '@', $item['name'] )[0]) . '</a>
+		';
 	}
 
 	// Execute hook printTopRightMenu (hooks should output string like '<div class="login"><a href="">mylink</a></div>')

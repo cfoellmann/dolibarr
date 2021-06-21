@@ -419,8 +419,8 @@ a.top-menu-dropdown-link {
 
 .quickadd-body.dropdown-body {
 	padding: unset;
-	/*padding-top: 15px;*/
 }
+
 .quickadd-item {
 	padding-top: 6px;
 	padding-bottom: 6px;
