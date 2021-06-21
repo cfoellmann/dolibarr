@@ -2377,13 +2377,13 @@ function printDropdownQuickadd()
 
 	$itemHtml = "";
 
-	foreach ( $items as $item ) {
-		if( !$item['activation'] ) continue;
-		$langs->load( explode( '@', $item['title'] )[1] );
-		$langs->load( explode( '@', $item['name'] )[1] );
+	foreach ($items as $item) {
+		if ( !$item['activation'] ) continue;
+		$langs->load(explode('@', $item['title'])[1]);
+		$langs->load(explode('@', $item['name'])[1]);
 		$dropDownQuickAddHtml .= '
-			<a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.$item['url'].'" title="'.$langs->trans(explode( '@', $item['title'] )[0]).'">
-			'. img_picto('', $item['picto'], 'style="width:18px;"') . ' ' . $langs->trans(explode( '@', $item['name'] )[0]) . '</a>
+			<a class="dropdown-item quickadd-item" href="'.DOL_URL_ROOT.$item['url'].'" title="'.$langs->trans(explode('@', $item['title'])[0]).'">
+			'. img_picto('', $item['picto'], 'style="width:18px;"') . ' ' . $langs->trans(explode('@', $item['name'])[0]) . '</a>
 		';
 	}
 
@@ -2404,7 +2404,6 @@ function printDropdownQuickadd()
 	$dropDownQuickAddHtml .= '</div>';
 
 	return $dropDownQuickAddHtml;
-
 }
 
 /**
