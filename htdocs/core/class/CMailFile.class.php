@@ -455,6 +455,10 @@ class CMailFile
 
 			if ( $dolibarr_main_prod == '0' ) {
 				$headers->addTextHeader('X-PM-Message-Stream', 'development');
+			} else {
+				if ( substr( $this->trackid, 0, 3 ) === "inv" ) {
+					$headers->addTextHeader('X-PM-Message-Stream', 'invoicing');
+				}
 			}
 
 			$this->msgid = time().'.swiftmailer-dolibarr-'.$this->trackid.'@'.$host;
