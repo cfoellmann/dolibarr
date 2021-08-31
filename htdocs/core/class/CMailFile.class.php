@@ -391,6 +391,14 @@ class CMailFile
 				$smtps->setMoreInHeader($moreinheader);
 			}
 
+			if ( $dolibarr_main_prod == '0' ) {
+				$smtps->setMoreInHeader("X-PM-Message-Stream: development\r\n");
+			} else {
+				if ( substr( $this->trackid, 0, 3 ) === "inv" ) {
+					$smtps->setMoreInHeader("X-PM-Message-Stream: invoicing\r\n");
+				}
+			}
+
 			if (!empty($this->html)) {
 				if (!empty($css)) {
 					$this->css = $css;
