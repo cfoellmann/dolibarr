@@ -499,6 +499,8 @@ if (empty($reshook)) {
 
 			if ($idprod > 0) {
 				$label = $productsupplier->label;
+
+				if (empty($conf->global->PRODUIT_AUTOFILL_DESC) && $conf->global->PRODUIT_AUTOFILL_DESC != 1) {
 				// Define output language
 				if (!empty($conf->global->MAIN_MULTILANGS) && !empty($conf->global->PRODUIT_TEXTS_IN_THIRDPARTY_LANGUAGE)) {
 					$outputlangs = $langs;
@@ -517,9 +519,10 @@ if (empty($reshook)) {
 				} else {
 					$desc = $productsupplier->description;
 				}
+				}
 				// if we use supplier description of the products
 				if (!empty($productsupplier->desc_supplier) && !empty($conf->global->PRODUIT_FOURN_TEXTS)) {
-					$desc = $productsupplier->desc_supplier;
+//					$desc = $productsupplier->desc_supplier;
 				}
 
 				//If text set in desc is the same as product descpription (as now it's preloaded) whe add it only one time

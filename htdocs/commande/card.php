@@ -832,6 +832,7 @@ if (empty($reshook)) {
 
 				$desc = '';
 
+				if (empty($conf->global->PRODUIT_AUTOFILL_DESC) && $conf->global->PRODUIT_AUTOFILL_DESC != 1) {
 				// Define output language
 				if (!empty($conf->global->MAIN_MULTILANGS) && !empty($conf->global->PRODUIT_TEXTS_IN_THIRDPARTY_LANGUAGE)) {
 					$outputlangs = $langs;
@@ -851,7 +852,7 @@ if (empty($reshook)) {
 				} else {
 					$desc = $prod->description;
 				}
-
+				}
 				//If text set in desc is the same as product descpription (as now it's preloaded) whe add it only one time
 				if ($product_desc==$desc && !empty($conf->global->PRODUIT_AUTOFILL_DESC)) {
 					$product_desc='';

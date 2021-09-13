@@ -1445,13 +1445,14 @@ if (empty($reshook)) {
 			if ($idprod > 0) {
 				$label = $productsupplier->label;
 
+				if (empty($conf->global->PRODUIT_AUTOFILL_DESC) && $conf->global->PRODUIT_AUTOFILL_DESC != 1) {
 				// if we use supplier description of the products
 				if (!empty($productsupplier->desc_supplier) && !empty($conf->global->PRODUIT_FOURN_TEXTS)) {
 					$desc = $productsupplier->desc_supplier;
 				} else {
 					$desc = $productsupplier->description;
 				}
-
+				}
 				//If text set in desc is the same as product descpription (as now it's preloaded) whe add it only one time
 				if ($product_desc==$desc && !empty($conf->global->PRODUIT_AUTOFILL_DESC)) {
 					$product_desc='';
