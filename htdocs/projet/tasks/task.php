@@ -117,10 +117,10 @@ if ($action == 'update' && !GETPOST("cancel") && $user->rights->projet->creer) {
 			$result = $object->update($user);
 			if ($result < 0) {
 				setEventMessages($object->error, $object->errors, 'errors');
+
+				header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id."&withproject=1");
+				exit;
 			}
-			$page = DOL_URL_ROOT.'/projet/tasks/task.php?id='.$id.'&withproject=1';
-			header("Location: ".$page);
-			exit;
 		}
 	} else {
 		$action = 'edit';
@@ -147,7 +147,7 @@ if (!empty($project_ref) && !empty($withproject)) {
 		if (count($tasksarray) > 0) {
 			$id = $tasksarray[0]->id;
 		} else {
-			header("Location: ".DOL_URL_ROOT.'/projet/tasks.php?id='.$projectstatic->id.(empty($mode) ? '' : '&mode='.$mode));
+			header("Location: ".$_SERVER["PHP_SELF"].'?id='.$projectstatic->id.(empty($mode) ? '' : '&mode='.$mode));
 		}
 	}
 }
