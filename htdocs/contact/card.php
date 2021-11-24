@@ -461,6 +461,9 @@ if (empty($reshook)) {
 					}
 
 					$action = 'view';
+
+					header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
+					exit;
 				} else {
 					setEventMessages($object->error, $object->errors, 'errors');
 					$action = 'edit';
@@ -514,6 +517,9 @@ if (empty($reshook)) {
 		if ($result > 0) {
 			setEventMessages($langs->trans('RecordSaved'), null, 'mesgs');
 			$action = 'view';
+
+			header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
+			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 			$action = 'edit_extras';

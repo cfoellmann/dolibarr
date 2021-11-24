@@ -227,6 +227,9 @@ if (empty($reshook)) {
 				$object->setCategories($categories);
 				$action = '';
 			}
+
+			header("Location: ".$_SERVER["PHP_SELF"]."?id=".$id);
+			exit;
 		} else {
 			$action = 'edit';
 			setEventMessages($object->error, $object->errors, 'errors');
