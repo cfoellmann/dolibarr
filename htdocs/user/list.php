@@ -137,6 +137,7 @@ $arrayfields = array(
 	'u.datec'=>array('label'=>"DateCreation", 'checked'=>0, 'position'=>500),
 	'u.tms'=>array('label'=>"DateModificationShort", 'checked'=>0, 'position'=>500),
 	'u.statut'=>array('label'=>"Status", 'checked'=>1, 'position'=>1000),
+	'u.dateemployment'=>array('label'=>"Anstellungsbeginn", 'checked'=>0, 'position'=>600),
 );
 // Extra fields
 include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_list_array_fields.tpl.php';
@@ -344,7 +345,7 @@ $morehtmlright = "";
 // Build and execute select
 // --------------------------------------------------------------------
 $sql = "SELECT DISTINCT u.rowid, u.lastname, u.firstname, u.admin, u.fk_soc, u.login, u.office_phone, u.user_mobile, u.email, u.api_key, u.accountancy_code, u.gender, u.employee, u.photo,";
-$sql .= " u.salary, u.datelastlogin, u.datepreviouslogin,";
+$sql .= " u.salary, u.datelastlogin, u.datepreviouslogin, u.dateemployment,";
 $sql .= " u.ldap_sid, u.statut as status, u.entity,";
 $sql .= " u.tms as date_update, u.datec as date_creation,";
 $sql .= " u2.rowid as id2, u2.login as login2, u2.firstname as firstname2, u2.lastname as lastname2, u2.admin as admin2, u2.fk_soc as fk_soc2, u2.office_phone as ofice_phone2, u2.user_mobile as user_mobile2, u2.email as email2, u2.gender as gender2, u2.photo as photo2, u2.entity as entity2, u2.statut as status2,";
@@ -760,6 +761,9 @@ if (!empty($arrayfields['u.datelastlogin']['checked'])) {
 if (!empty($arrayfields['u.datepreviouslogin']['checked'])) {
 	print '<td class="liste_titre"></td>';
 }
+if (!empty($arrayfields['u.dateemployment']['checked'])) {
+	print '<td class="liste_titre"></td>';
+}
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_input.tpl.php';
 // Fields from hook
@@ -864,6 +868,9 @@ if (!empty($arrayfields['u.datelastlogin']['checked'])) {
 if (!empty($arrayfields['u.datepreviouslogin']['checked'])) {
 	print_liste_field_titre("PreviousConnexion", $_SERVER['PHP_SELF'], "u.datepreviouslogin", $param, "", '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
+}
+if (!empty($arrayfields['u.dateemployment']['checked'])) {
+	print_liste_field_titre("Anstellungsbeginn", $_SERVER['PHP_SELF'], "u.dateemployment", $param, "", '', $sortfield, $sortorder, 'center ');
 }
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
@@ -1189,6 +1196,13 @@ while ($i < $imaxinloop) {
 			print '<td class="center">';
 			print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
 			print '</td>';
+			if (!$i) {
+				$totalarray['nbfield']++;
+			}
+		}
+		// Date employment start
+		if (!empty($arrayfields['u.dateemployment']['checked'])) {
+			print '<td class="nowrap center">'.dol_print_date($db->jdate($obj->dateemployment), "day").'</td>';
 			if (!$i) {
 				$totalarray['nbfield']++;
 			}
