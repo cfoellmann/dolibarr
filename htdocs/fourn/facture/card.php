@@ -137,8 +137,8 @@ $usercandelete = (($user->hasRight("fournisseur", "facture", "supprimer") || $us
 $usercancreatecontract = $user->hasRight("contrat", "creer");
 
 // Advanced permissions
-$usercanvalidate = ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !empty($usercancreate)) || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight("fournisseur", "supplier_invoice_advance", "validate")));
-$usercansend = (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || $user->hasRight("fournisseur", "supplier_invoice_advance", "send"));
+$usercanvalidate = $usercancreate; // ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !empty($usercancreate)) || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight("fournisseur", "supplier_invoice_advance", "validate")));
+$usercansend = $usercancreate; // (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || $user->hasRight("fournisseur", "supplier_invoice_advance", "send"));
 
 // Permissions for includes
 $permissionnote = $usercancreate; // Used by the include of actions_setnotes.inc.php

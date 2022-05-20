@@ -305,7 +305,7 @@ if ($object->id > 0) {
 	$sql .= " WHERE r.libelle NOT LIKE 'tou%'"; // On ignore droits "tous"
 	$sql .= " AND r.entity = ".((int) $entity);
 	if (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
-		$sql .= " AND r.perms NOT LIKE '%_advance'"; // Hide advanced perms if option is not enabled
+		// $sql .= " AND r.perms NOT LIKE '%_advance'"; // Hide advanced perms if option is not enabled
 	}
 	$sql .= " ORDER BY r.family_position, r.module_position, r.module, r.id";
 
