@@ -1310,7 +1310,7 @@ function get_left_menu_commercial($mainmenu, &$newmenu, $usemenuhider = 1, $left
 		if (isModEnabled('commande')) {
 			$langs->load("orders");
 			$newmenu->add("/commande/index.php?leftmenu=orders", $langs->trans("CustomersOrders"), 0, $user->rights->commande->lire, '', $mainmenu, 'orders', 200, '', '', '', img_picto('', 'order', 'class="paddingright pictofixedwidth"'));
-			$newmenu->add("/commande/card.php?action=create&amp;leftmenu=orders", $langs->trans("NewOrder"), 1, $user->rights->commande->creer);
+			$newmenu->add("/commande/card.php?action=create&amp;leftmenu=orders", $langs->trans("NewCustomerOrder"), 1, $user->rights->commande->creer);
 			$newmenu->add("/commande/list.php?leftmenu=orders", $langs->trans("List"), 1, $user->rights->commande->lire);
 			if ($usemenuhider || empty($leftmenu) || $leftmenu == "orders") {
 				$newmenu->add("/commande/list.php?leftmenu=orders&search_status=0", $langs->trans("StatusOrderDraftShort"), 2, $user->rights->commande->lire);

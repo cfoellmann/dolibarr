@@ -1498,7 +1498,7 @@ if (!empty($conf->project->enabled)) {
 
 // Mode creation
 if ($action == 'create' && $usercancreate) {
-	print load_fiche_titre($langs->trans('CreateOrder'), '', 'order');
+	print load_fiche_titre($langs->trans('CreateCustomerOrder'), '', 'order');
 
 	$soc = new Societe($db);
 	if ($socid > 0) {
@@ -2800,7 +2800,7 @@ if ($action == 'create' && $usercancreate) {
 
 				// Cancel order
 				if ($object->statut == Commande::STATUS_VALIDATED && !empty($usercancancel)) {
-					print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=cancel&token='.newToken().'">'.$langs->trans("Cancel").'</a>';
+					print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=cancel&token='.newToken().'">'.$langs->trans("OrderButtonCancel").'</a>';
 				}
 
 				// Delete order
