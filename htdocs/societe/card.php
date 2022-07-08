@@ -1687,7 +1687,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $form->selectyesno('localtax2assuj_value', (isset($conf->global->THIRDPARTY_DEFAULT_USELOCALTAX2) ? $conf->global->THIRDPARTY_DEFAULT_USELOCALTAX2 : 0), 1);
 			print '</td></tr>';
 		}
-
+	if(false): // HIDE Thirdparty Type + Workforce
 		// Type - Workforce/Staff
 		print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.( ($conf->browser->layout == 'phone' || !empty($conf->global->SOCIETE_DISABLE_WORKFORCE)) ? ' colspan="3"' : '').'>'."\n";
 		$sortparam = (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT); // NONE means we keep sort of original array, so we sort on position. ASC, means next function will sort on label.
@@ -1709,7 +1709,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<input type="hidden" name="effectif_id" id="effectif_id" value="'.$object->effectif_id.'">';
 		}
 		print '</td></tr>';
-
+	endif; // HIDE Thirdparty Type + Workforce
 		// Legal Form
 		print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td>';
 		print '<td colspan="3" class="maxwidthonsmartphone">';
@@ -2391,7 +2391,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print $s;
 			print '</td>';
 			print '</tr>';
-
+		if(false): // HIDE Type - Workforce/Staff
 			// Type - Workforce/Staff
 			print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.( ($conf->browser->layout == 'phone' || !empty($conf->global->SOCIETE_DISABLE_WORKFORCE)) ? ' colspan="3"' : '').'>';
 			print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 1, 0, 0, '', 0, 0, 0, (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT), '', 1);
@@ -2412,7 +2412,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '<input type="hidden" name="effectif_id" id="effectif_id" value="'.$object->effectif_id.'">';
 			}
 			print '</td></tr>';
-
+		endif; // HIDE Type - Workforce/Staff
 			// Juridical type
 			print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td><td class="maxwidthonsmartphone" colspan="3">';
 			print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
@@ -2889,7 +2889,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 		}
 
-
+	if(false): // HIDE Third-Party Type
 		// Third-Party Type
 		print '<tr><td>';
 		print '<table class="nobordernopadding" width="100%"><tr><td>'.$langs->trans('ThirdPartyType').'</td>';
@@ -2901,7 +2901,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		$html_name = ($action == 'editthirdpartytype') ? 'typent_id' : 'none';
 		$formcompany->formThirdpartyType($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->typent_id, $html_name, '');
 		print '</td></tr>';
-
+	endif; // HIDE Third-Party Type
 		// Workforce/Staff
 		if (empty($conf->global->SOCIETE_DISABLE_WORKFORCE)) {
 			print '<tr><td>'.$langs->trans("Workforce").'</td><td>'.$object->effectif.'</td></tr>';
