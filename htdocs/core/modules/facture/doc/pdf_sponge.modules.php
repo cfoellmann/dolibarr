@@ -757,6 +757,13 @@ class pdf_sponge extends ModelePDFFactures
 
 					$pdf->SetFont('', '', $default_font_size - 1); // We reposition the default font
 
+					// Position
+					if ($this->getColumnStatus('rang')) {
+						$rang_num = ($i + 1) * 10;
+						$this->printStdColumnContent($pdf, $curY, 'rang', $rang_num);
+						$nexY = max($pdf->GetY(), $nexY);
+					}
+
 					// VAT Rate
 					if ($this->getColumnStatus('vat')) {
 						$vat_rate = pdf_getlinevatrate($object, $i, $outputlangs, $hidedetails);

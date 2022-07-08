@@ -625,6 +625,13 @@ class pdf_cornas extends ModelePDFSuppliersOrders
 
 					$pdf->SetFont('', '', $default_font_size - 1); // On repositionne la police par defaut
 
+					// Position
+					if ($this->getColumnStatus('rang')) {
+						$rang = $object->lines[$i]->rang * 10;
+						$this->printStdColumnContent($pdf, $curY, 'rang', $rang);
+						$nexY = max($pdf->GetY(), $nexY);
+					}
+
 					// VAT Rate
 					if ($this->getColumnStatus('vat')) {
 						$vat_rate = pdf_getlinevatrate($object, $i, $outputlangs, $hidedetails);
