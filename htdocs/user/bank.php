@@ -78,8 +78,8 @@ if (empty($account->userid)) {
 
 
 // Define value to know what current user can do on users
-$canadduser = (!empty($user->admin) || $user->rights->user->user->creer);
-$canreaduser = (!empty($user->admin) || $user->rights->user->user->lire);
+$canadduser = (!empty($user->admin) || $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write);
+$canreaduser = (!empty($user->admin) || $user->rights->user->user->lire || $user->rights->hrm->read_personal_information->read);
 $permissiontoaddbankaccount = (!empty($user->rights->salaries->write) || !empty($user->rights->hrm->employee->write) || !empty($user->rights->user->creer));
 
 // Ok if user->rights->salaries->read or user->rights->hrm->read
@@ -230,6 +230,24 @@ if ($action == 'setpersonal_mobile' && $canadduser && !$cancel) {
 	}
 }
 
+// update ref_employee
+if ($action == 'setref_employee' && $canadduser && !$cancel) {
+	$object->ref_employee = (string) GETPOST('ref_employee', 'alphanohtml');
+	$result = $object->update($user);
+	if ($result < 0) {
+		setEventMessages($object->error, $object->errors, 'errors');
+	}
+}
+
+// update national_registration_number
+if ($action == 'setnational_registration_number' && $canadduser && !$cancel) {
+	$object->national_registration_number = (string) GETPOST('national_registration_number', 'alphanohtml');
+	$result = $object->update($user);
+	if ($result < 0) {
+		setEventMessages($object->error, $object->errors, 'errors');
+	}
+}
+
 if (!empty($conf->global->MAIN_USE_EXPENSE_IK)) {
 	// update default_c_exp_tax_cat
 	if ($action == 'setdefault_c_exp_tax_cat' && $canadduser) {
@@ -263,7 +281,7 @@ llxHeader(null, $langs->trans("BankAccounts"));
 
 $head = user_prepare_head($object);
 
-if ($id && $bankid && $action == 'edit' && $user->rights->user->user->creer) {
+if ($id && $bankid && $action == 'edit' && ($user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write)) {
 	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
@@ -428,31 +446,37 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 	print "</tr>\n";
 
 	// Date of birth
-	print '<tr>';
-	print '<td>';
-	print $form->editfieldkey("DateOfBirth", 'birth', $object->birth, $object, $user->rights->user->user->creer);
-	print '</td><td>';
-	print $form->editfieldval("DateOfBirth", 'birth', $object->birth, $object, $user->rights->user->user->creer, 'day', $object->birth);
-	print '</td>';
-	print "</tr>\n";
+	if ($user->hasRight('hrm', 'read_personal_information', 'read') || $user->hasRight('hrm', 'write_personal_information', 'write')) {
+		print '<tr>';
+		print '<td>';
+		print $form->editfieldkey("DateOfBirth", 'birth', $object->birth, $object, $user->rights->user->user->creer);
+		print '</td><td>';
+		print $form->editfieldval("DateOfBirth", 'birth', $object->birth, $object, $user->rights->user->user->creer, 'day', $object->birth);
+		print '</td>';
+		print "</tr>\n";
+	}
 
 	// Personal email
-	print '<tr class="nowrap">';
-	print '<td>';
-	print $form->editfieldkey("UserPersonalEmail", 'personal_email', $object->personal_email, $object, $user->rights->user->user->creer);
-	print '</td><td>';
-	print $form->editfieldval("UserPersonalEmail", 'personal_email', $object->personal_email, $object, $user->rights->user->user->creer, 'email', '', null, null, '', 0, 'dol_print_email');
-	print '</td>';
-	print '</tr>';
+	if ($user->hasRight('hrm', 'read_personal_information', 'read') || $user->hasRight('hrm', 'write_personal_information', 'write')) {
+		print '<tr class="nowrap">';
+		print '<td>';
+		print $form->editfieldkey("UserPersonalEmail", 'personal_email', $object->personal_email, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write);
+		print '</td><td>';
+		print $form->editfieldval("UserPersonalEmail", 'personal_email', $object->personal_email, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write, 'email', '', null, null, '', 0, 'dol_print_email');
+		print '</td>';
+		print '</tr>';
+	}
 
 	// Personal phone
-	print '<tr class="nowrap">';
-	print '<td>';
-	print $form->editfieldkey("UserPersonalMobile", 'personal_mobile', $object->personal_mobile, $object, $user->rights->user->user->creer);
-	print '</td><td>';
-	print $form->editfieldval("UserPersonalMobile", 'personal_mobile', $object->personal_mobile, $object, $user->rights->user->user->creer, 'string', '', null, null, '', 0, 'dol_print_phone');
-	print '</td>';
-	print '</tr>';
+	if ($user->hasRight('hrm', 'read_personal_information', 'read') || $user->hasRight('hrm', 'write_personal_information', 'write')) {
+		print '<tr class="nowrap">';
+		print '<td>';
+		print $form->editfieldkey("UserPersonalMobile", 'personal_mobile', $object->personal_mobile, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write);
+		print '</td><td>';
+		print $form->editfieldval("UserPersonalMobile", 'personal_mobile', $object->personal_mobile, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write, 'string', '', null, null, '', 0, 'dol_print_phone');
+		print '</td>';
+		print '</tr>';
+	}
 
 	if (!empty($conf->global->MAIN_USE_EXPENSE_IK)) {
 		print '<tr class="nowrap">';
@@ -502,6 +526,34 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 		print '</tr>';
 	}
 
+	// Accountancy code
+	if (!empty($conf->accounting->enabled)) {
+		print '<tr><td>'.$langs->trans("AccountancyCode").'</td>';
+		print '<td>'.$object->accountancy_code.'</td></tr>';
+	}
+
+	// Employee Number
+	if ($user->hasRight('hrm', 'read_personal_information', 'read') || $user->hasRight('hrm', 'write_personal_information', 'write')) {
+		print '<tr class="nowrap">';
+		print '<td>';
+		print $form->editfieldkey("RefEmployee", 'ref_employee', $object->ref_employee, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write);
+		print '</td><td>';
+		print $form->editfieldval("RefEmployee", 'ref_employee', $object->ref_employee, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write, 'string', $object->ref_employee);
+		print '</td>';
+		print '</tr>';
+	}
+
+	// National registration number
+	if ($user->hasRight('hrm', 'read_personal_information', 'read') || $user->hasRight('hrm', 'write_personal_information', 'write')) {
+		print '<tr class="nowrap">';
+		print '<td>';
+		print $form->editfieldkey("NationalRegistrationNumber", 'national_registration_number', $object->national_registration_number, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write);
+		print '</td><td>';
+		print $form->editfieldval("NationalRegistrationNumber", 'national_registration_number', $object->national_registration_number, $object, $user->rights->user->user->creer || $user->rights->hrm->write_personal_information->write, 'string', $object->national_registration_number);
+		print '</td>';
+		print '</tr>';
+	}
+
 	print '</table>';
 
 	print '</div><div class="fichehalfright">';
@@ -528,6 +580,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 		if ($resql) {
 			$num = $db->num_rows($resql);
 
+			print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you dont need reserved height for your table
 			print '<table class="noborder centpercent">';
 
 			print '<tr class="liste_titre">';
@@ -555,30 +608,27 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 				print '<td class="nowraponall">';
 				print $salary->getNomUrl(1);
 				print '</td>';
-
-				print '<td class="right" width="80px">'.dol_print_date($db->jdate($objp->datesp), 'day')."</td>\n";
-				print '<td class="right" width="80px">'.dol_print_date($db->jdate($objp->dateep), 'day')."</td>\n";
-				print '<td class="right" class="nowraponall"><span class="amount">'.price($objp->amount).'</span></td>';
-				print '<td class="right" class="nowraponall">'.$salary->getLibStatut(5, $objp->alreadypaid).'</td>';
-
+				print '<td class="right nowraponall">'.dol_print_date($db->jdate($objp->datesp), 'day')."</td>\n";
+				print '<td class="right nowraponall">'.dol_print_date($db->jdate($objp->dateep), 'day')."</td>\n";
+				print '<td class="right nowraponall"><span class="amount">'.price($objp->amount).'</span></td>';
+				print '<td class="right nowraponall">'.$salary->getLibStatut(5, $objp->alreadypaid).'</td>';
 				print '</tr>';
 				$i++;
 			}
 			$db->free($resql);
 
 			if ($num <= 0) {
-				print '<td colspan="5" class="opacitymedium">'.$langs->trans("None").'</a>';
+				print '<td colspan="5"><span class="opacitymedium">'.$langs->trans("None").'</span></a>';
 			}
 			print "</table>";
+			print "</div>";
 		} else {
 			dol_print_error($db);
 		}
 	}
 
 	// Latest leave requests
-	if (!empty($conf->holiday->enabled) &&
-		($user->rights->holiday->readall || ($user->rights->holiday->read && $object->id == $user->id))
-		) {
+	if (!empty($conf->holiday->enabled) && ($user->rights->holiday->readall || ($user->rights->holiday->read && $object->id == $user->id))) {
 		$holiday = new Holiday($db);
 
 		$sql = "SELECT h.rowid, h.statut as status, h.fk_type, h.date_debut, h.date_fin, h.halfday";
@@ -591,6 +641,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 		if ($resql) {
 			$num = $db->num_rows($resql);
 
+			print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you dont need reserved height for your table
 			print '<table class="noborder centpercent">';
 
 			print '<tr class="liste_titre">';
@@ -604,24 +655,29 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 
 				$holiday->id = $objp->rowid;
 				$holiday->ref = $objp->rowid;
+
 				$holiday->fk_type = $objp->fk_type;
 				$holiday->statut = $objp->status;
-				$nbopenedday = num_open_day($db->jdate($objp->date_debut), $db->jdate($objp->date_fin), 0, 1, $objp->halfday);
+				$holiday->status = $objp->status;
+
+				$nbopenedday = num_open_day($db->jdate($objp->date_debut, 'gmt'), $db->jdate($objp->date_fin, 'gmt'), 0, 1, $objp->halfday);
 
 				print '<tr class="oddeven">';
-				print '<td class="nowrap">';
+				print '<td class="nowraponall">';
 				print $holiday->getNomUrl(1);
-				print '</td><td class="right" width="80px">'.dol_print_date($db->jdate($objp->date_debut), 'day')."</td>\n";
-				print '<td class="right" style="min-width: 60px">'.$nbopenedday.' '.$langs->trans('DurationDays').'</td>';
-				print '<td class="right" style="min-width: 60px" class="nowrap">'.$holiday->LibStatut($objp->status, 5).'</td></tr>';
+				print '</td><td class="right nowraponall">'.dol_print_date($db->jdate($objp->date_debut), 'day')."</td>\n";
+				print '<td class="right nowraponall">'.$nbopenedday.' '.$langs->trans('DurationDays').'</td>';
+				print '<td class="right nowraponall">'.$holiday->LibStatut($objp->status, 5).'</td>';
+				print '</tr>';
 				$i++;
 			}
 			$db->free($resql);
 
 			if ($num <= 0) {
-				print '<td colspan="4" class="opacitymedium">'.$langs->trans("None").'</a>';
+				print '<td colspan="4"><span class="opacitymedium">'.$langs->trans("None").'</span></a>';
 			}
 			print "</table>";
+			print "</div>";
 		} else {
 			dol_print_error($db);
 		}
@@ -643,6 +699,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 		if ($resql) {
 			$num = $db->num_rows($resql);
 
+			print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you dont need reserved height for your table
 			print '<table class="noborder centpercent">';
 
 			print '<tr class="liste_titre">';
@@ -659,19 +716,21 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 				$exp->status = $objp->status;
 
 				print '<tr class="oddeven">';
-				print '<td class="nowrap">';
+				print '<td class="nowraponall">';
 				print $exp->getNomUrl(1);
-				print '</td><td class="right" width="80px">'.dol_print_date($db->jdate($objp->date_debut), 'day')."</td>\n";
-				print '<td class="right" style="min-width: 60px"><span class="amount">'.price($objp->total_ttc).'</span></td>';
-				print '<td class="right nowrap" style="min-width: 60px">'.$exp->LibStatut($objp->status, 5).'</td></tr>';
+				print '</td><td class="right nowraponall">'.dol_print_date($db->jdate($objp->date_debut), 'day')."</td>\n";
+				print '<td class="right nowraponall"><span class="amount">'.price($objp->total_ttc).'</span></td>';
+				print '<td class="right nowraponall">'.$exp->LibStatut($objp->status, 5).'</td>';
+				print '</tr>';
 				$i++;
 			}
 			$db->free($resql);
 
 			if ($num <= 0) {
-				print '<td colspan="4" class="opacitymedium">'.$langs->trans("None").'</a>';
+				print '<td colspan="4"><span class="opacitymedium">'.$langs->trans("None").'</span></a>';
 			}
 			print "</table>";
+			print "</div>";
 		} else {
 			dol_print_error($db);
 		}

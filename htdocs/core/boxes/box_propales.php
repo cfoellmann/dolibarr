@@ -130,6 +130,7 @@ class box_propales extends ModeleBoxes
 					$propalstatic->total_ttc = $objp->total_ttc;
 					$propalstatic->statut = $objp->status;
 					$propalstatic->status = $objp->status;
+					$propalstatic->date = $date;
 
 					$societestatic->id = $objp->socid;
 					$societestatic->name = $objp->name;
@@ -160,13 +161,13 @@ class box_propales extends ModeleBoxes
 					);
 
 					$this->info_box_contents[$line][] = array(
-						'td' => 'class="right nowraponall"',
+						'td' => 'class="nowraponall right amount"',
 						'text' => price($objp->total_ht, 0, $langs, 0, -1, -1, $conf->currency),
 					);
 
 					$this->info_box_contents[$line][] = array(
-						'td' => 'class="center nowraponall"',
-						'text' => dol_print_date($date, 'day', 'tzuserrel'),
+						'td' => 'class="center nowraponall" title="'.dol_escape_htmltag($langs->trans("DateModification").': '.dol_print_date($datem, 'dayhour', 'tzuserrel')).'"',
+						'text' => dol_print_date($datem, 'day', 'tzuserrel'),
 					);
 
 					$this->info_box_contents[$line][] = array(
