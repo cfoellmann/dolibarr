@@ -1505,7 +1505,8 @@ if ($action == 'create') {
 
 						// Add description in form
 						if (!empty($conf->global->PRODUIT_DESC_IN_FORM)) {
-							$text .= (!empty($objp->description) && $objp->description != $objp->plabel) ? '<br>'.dol_htmlentitiesbr($objp->description) : '';
+							$display_desc = '<div style="padding: 2px 5px; border-left: lightblue solid 5px; margin: 5px 0; color: grey;">'.dol_htmlentitiesbr($line->description).'</div>';
+							$text .= (!empty($objp->description) && $objp->description != $objp->plabel) ? $display_desc : '';
 							$description = ''; // Already added into main visible desc
 						}
 

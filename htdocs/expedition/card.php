@@ -2183,8 +2183,9 @@ if ($action == 'create') {
 					$description = (!empty($conf->global->PRODUIT_DESC_IN_FORM) ? '' : dol_htmlentitiesbr($lines[$i]->description));
 					print $form->textwithtooltip($text, $description, 3, '', '', $i);
 					print_date_range(!empty($lines[$i]->date_start) ? $lines[$i]->date_start : '', !empty($lines[$i]->date_end) ? $lines[$i]->date_end : '');
+					$display_desc = '<div style="padding: 2px 5px; border-left: lightblue solid 5px; margin: 5px 0; color: grey;">'.dol_htmlentitiesbr($lines[$i]->description).'</div>';
 					if (!empty($conf->global->PRODUIT_DESC_IN_FORM)) {
-						print (!empty($lines[$i]->description) && $lines[$i]->description != $lines[$i]->product) ? '<br>'.dol_htmlentitiesbr($lines[$i]->description) : '';
+						print (!empty($lines[$i]->description) && $lines[$i]->description != $lines[$i]->product) ? $display_desc : '';
 					}
 					print "</td>\n";
 				} else {
@@ -2199,6 +2200,7 @@ if ($action == 'create') {
 						$text .= ' <strong>'.$lines[$i]->label.'</strong>';
 						print $form->textwithtooltip($text, $lines[$i]->description, 3, '', '', $i);
 					} else {
+						$display_desc = '<div style="padding: 2px 5px; border-left: lightblue solid 5px; margin: 5px 0; color: grey;">'.dol_htmlentitiesbr($lines[$i]->description).'</div>';
 						print $text.' '.nl2br($lines[$i]->description);
 					}
 
