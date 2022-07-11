@@ -2710,7 +2710,9 @@ if ($action == 'create' || $action == 'adduserldap') {
 			// Sensitive salary/value information
 			if ((empty($user->socid) && in_array($id, $childids))	// A user can always see salary/value information for its subordinates
 				|| (!empty($conf->salaries->enabled) && !empty($user->rights->salaries->readall))
-				|| (!empty($conf->hrm->enabled) && !empty($user->rights->hrm->employee->read))) {
+//				|| (!empty($conf->hrm->enabled) && !empty($user->rights->hrm->employee->read))
+				|| (!empty($user->rights->wusshared->salary->write))
+) {
 					$langs->load("salaries");
 
 				// Salary
