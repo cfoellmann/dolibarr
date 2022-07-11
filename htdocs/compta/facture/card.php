@@ -5435,9 +5435,40 @@ if ($action == 'create') {
 				}
 			}
 
+			$start_dates = array();
+			$end_dates   = array();
+			$has_dates   = true;
+
+			// Collect all dates
+			foreach ( $object->lines as $line ) {
+				if (! empty( $line->date_start ) ) $start_dates[] = $line->date_start;
+				if (! empty( $line->date_end ) ) $end_dates[] = $line->date_end;
+			}
+
+			if ( ! empty( $start_dates ) ) {
+				$start_date = dol_print_date( min( $start_dates ), '%Y-%m-%d' );
+			} else {
+				$has_dates = false;
+			}
+
+			if ( ! empty( $end_dates ) ) {
+				$start_end = dol_print_date( max( $end_dates ), '%Y-%m-%d' );
+			} else {
+				$has_dates = false;
+			}
+
+			// Set requirements to false if any blocker is present
+			$requirements = true;
+
+			$is_construction = in_array($object->array_options['options_invoicetypecode'], array('875','876','877'));
+
+			if ( $is_construction && ! $has_dates ) {
+				$requirements = false;
+			}
+
 			// Validate
 			if ($object->statut == Facture::STATUS_DRAFT && count($object->lines) > 0 && ((($object->type == Facture::TYPE_STANDARD || $object->type == Facture::TYPE_REPLACEMENT || $object->type == Facture::TYPE_DEPOSIT || $object->type == Facture::TYPE_PROFORMA || $object->type == Facture::TYPE_SITUATION) && (!empty($conf->global->FACTURE_ENABLE_NEGATIVE) || $object->total_ttc >= 0)) || ($object->type == Facture::TYPE_CREDIT_NOTE && $object->total_ttc <= 0))) {
-				if ($usercanvalidate) {
+				if ($usercanvalidate && $requirements) {
 					print dolGetButtonAction($langs->trans('Validate'), '', 'default', $_SERVER["PHP_SELF"].'?facid='.$object->id.'&action=valid&token='.newToken(), '', true, $params);
 				}
 			}
