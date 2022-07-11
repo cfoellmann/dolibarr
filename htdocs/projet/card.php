@@ -553,7 +553,11 @@ if ($action == 'create' && $user->rights->projet->creer) {
 	print '</td></tr>';
 
 	// Label
-	print '<tr><td><span class="fieldrequired">'.$langs->trans("ProjectLabel").'</span></td><td><input class="width500 maxwidth150onsmartphone" type="text" name="title" value="'.dol_escape_htmltag(GETPOST("title", 'alphanohtml')).'" autofocus></td></tr>';
+	print '<tr><td><span class="fieldrequired">'.$langs->trans("ProjectLabel").'</span></td><td><input class="width500 maxwidth150onsmartphone" type="text" name="title" value="'.dol_escape_htmltag(GETPOST("title", 'alphanohtml')).'" autofocus>';
+	if ( $conf->entity == 2 ) {
+		print ' ' . $form->textwithpicto( '', "Betriebsstellenbezeichnung - Stellwerkname ( Beispiel: FNF - Neuhof Kr Fulda )<br />Kurs-Schema: Gr. 19/13 Td0577" );
+	}
+	print '</td></tr>';
 
 	// Usage (opp, task, bill time, ...)
 	if (!empty($conf->global->PROJECT_USE_OPPORTUNITIES) || empty($conf->global->PROJECT_HIDE_TASKS) || !empty($conf->eventorganization->enabled)) {
@@ -695,12 +699,12 @@ if ($action == 'create' && $user->rights->projet->creer) {
 		print '<td><input size="5" type="text" name="opp_amount" value="'.dol_escape_htmltag(GETPOSTISSET('opp_amount') ? GETPOST('opp_amount') : '').'"></td>';
 		print '</tr>';
 	}
-
+if(false): // HIDE Budget
 	// Budget
 	print '<tr><td>'.$langs->trans("Budget").'</td>';
 	print '<td><input size="5" type="text" name="budget_amount" value="'.dol_escape_htmltag(GETPOSTISSET('budget_amount') ? GETPOST('budget_amount') : '').'"></td>';
 	print '</tr>';
-
+endif; // HIDE Budget
 	// Description
 	print '<tr><td class="tdtop">'.$langs->trans("Description").'</td>';
 	print '<td>';
@@ -985,14 +989,14 @@ if ($action == 'create' && $user->rights->projet->creer) {
 		print '<tr><td>'.$langs->trans("DateEnd").'</td><td>';
 		print $form->selectDate($object->date_end ? $object->date_end : -1, 'projectend', 0, 0, 0, '', 1, 0);
 		print '</td></tr>';
-
+	if(false): // HIDE Budget
 		// Budget
 		print '<tr><td>'.$langs->trans("Budget").'</td>';
 		print '<td><input size="5" type="text" name="budget_amount" value="'.(GETPOSTISSET('budget_amount') ? GETPOST('budget_amount') : (strcmp($object->budget_amount, '') ? price2num($object->budget_amount) : '')).'">';
 		print $langs->getCurrencySymbol($conf->currency);
 		print '</td>';
 		print '</tr>';
-
+	endif; // HIDE Budget
 		// Description
 		print '<tr><td class="tdtop">'.$langs->trans("Description").'</td>';
 		print '<td>';
@@ -1144,14 +1148,14 @@ if ($action == 'create' && $user->rights->projet->creer) {
 			print img_warning("Late");
 		}
 		print '</td></tr>';
-
+	if(false): // HIDE Budget
 		// Budget
 		print '<tr><td>'.$langs->trans("Budget").'</td><td>';
 		if (strcmp($object->budget_amount, '')) {
 			print '<span class="amount">'.price($object->budget_amount, 0, $langs, 1, 0, 0, $conf->currency).'</span>';
 		}
 		print '</td></tr>';
-
+	endif; // HIDE Budget
 		// Other attributes
 		$cols = 2;
 		include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';

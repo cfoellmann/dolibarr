@@ -843,14 +843,14 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 				print img_warning("Late");
 			}
 			print '</td></tr>';
-
+		if(false): // HIDE Budget
 			// Budget
 			print '<tr><td>'.$langs->trans("Budget").'</td><td>';
 			if (strcmp($projectstatic->budget_amount, '')) {
 				print '<span class="amount">'.price($projectstatic->budget_amount, '', $langs, 1, 0, 0, $conf->currency).'</span>';
 			}
 			print '</td></tr>';
-
+		endif; // HIDE Budget
 			// Other attributes
 			$cols = 2;
 			//include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';

@@ -1767,13 +1767,13 @@ if ($action == 'create' && $usercancreate) {
 		print img_picto('', 'stock', 'class="pictofixedwidth"').$formproduct->selectWarehouses($warehouse_id, 'warehouse_id', '', 1, 0, 0, '', 0, 0, array(), 'maxwidth500 widthcentpercentminusxx');
 		print '</td></tr>';
 	}
-
+if(false): // HIDE Source / Channel
 	// Source / Channel - What trigger creation
 	print '<tr><td>'.$langs->trans('Channel').'</td><td>';
 	print img_picto('', 'question', 'class="pictofixedwidth"');
 	$form->selectInputReason($demand_reason_id, 'demand_reason_id', '', 1, 'maxwidth200 widthcentpercentminusx');
 	print '</td></tr>';
-
+endif; // HIDE Source / Channel
 	// TODO How record was recorded OrderMode (llx_c_input_method)
 
 	// Project

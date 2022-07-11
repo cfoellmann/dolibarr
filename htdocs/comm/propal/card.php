@@ -1727,13 +1727,13 @@ if ($action == 'create') {
 		print img_picto('', 'bank_account', 'class="pictofixedwidth"').$form->select_comptes($soc->fk_account, 'fk_account', 0, '', 1, '', 0, 'maxwidth200 widthcentpercentminusx', 1);
 		print '</td></tr>';
 	}
-
+if(false): // HIDE Source / Channel
 	// Source / Channel - What trigger creation
 	print '<tr class="field_demand_reason_id"><td class="titlefieldcreate">'.$langs->trans('Source').'</td><td class="valuefieldcreate">';
 	print img_picto('', 'question', 'class="pictofixedwidth"');
 	$form->selectInputReason('', 'demand_reason_id', "SRC_PROP", 1, 'maxwidth200 widthcentpercentminusx');
 	print '</td></tr>';
-
+endif; // HIDE Source / Channel
 	// Delivery delay
 	print '<tr class="field_availability_id"><td class="titlefieldcreate">'.$langs->trans('AvailabilityPeriod');
 	if (!empty($conf->commande->enabled)) {
