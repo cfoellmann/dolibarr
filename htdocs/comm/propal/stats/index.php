@@ -297,7 +297,7 @@ if (!in_array($nowyear, $arrayyears)) {
 	$arrayyears[$nowyear] = $nowyear;
 }
 arsort($arrayyears);
-print $form->selectarray('year', $arrayyears, $year, 0);
+print $form->selectarray('year', $arrayyears, $year, 0, 0, 0, '', 0, 0, 0, '', 'width75');
 print '</td></tr>';
 print '<tr><td align="center" colspan="2"><input type="submit" name="submit" class="button small" value="'.$langs->trans("Refresh").'"></td></tr>';
 print '</table>';
@@ -335,11 +335,11 @@ foreach ($data as $val) {
 	print '<tr class="oddeven" height="24">';
 	print '<td align="center"><a href="'.$_SERVER["PHP_SELF"].'?year='.$year.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$year.'</a></td>';
 	print '<td class="right">'.$val['nb'].'</td>';
-	print '<td class="right opacitylow" style="'.(($val['nb_diff'] >= 0) ? 'color: green;' : 'color: red;').'">'.round($val['nb_diff']).'%</td>';
+	print '<td class="right opacitylow" style="'.((!isset($val['nb_diff']) || $val['nb_diff'] >= 0) ? 'color: green;' : 'color: red;').'">'.(isset($val['nb_diff']) ? round($val['nb_diff']): "0").'%</td>';
 	print '<td class="right">'.price(price2num($val['total'], 'MT'), 1).'</td>';
-	print '<td class="right opacitylow" style="'.(($val['total_diff'] >= 0) ? 'color: green;' : 'color: red;').'">'.round($val['total_diff']).'%</td>';
+	print '<td class="right opacitylow" style="'.((!isset($val['total_diff']) || $val['total_diff'] >= 0) ? 'color: green;' : 'color: red;').'">'.(isset($val['total_diff']) ? round($val['total_diff']) : "0").'%</td>';
 	print '<td class="right">'.price(price2num($val['avg'], 'MT'), 1).'</td>';
-	print '<td class="right opacitylow" style="'.(($val['avg_diff'] >= 0) ? 'color: green;' : 'color: red;').'">'.round($val['avg_diff']).'%</td>';
+	print '<td class="right opacitylow" style="'.((!isset($val['avg_diff']) || $val['avg_diff'] >= 0) ? 'color: green;' : 'color: red;').'">'.(isset($val['avg_diff']) ? round($val['avg_diff']) : "0").'%</td>';
 	print '</tr>';
 	$oldyear = $year;
 }

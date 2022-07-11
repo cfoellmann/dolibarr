@@ -150,7 +150,6 @@ class pdf_vinci extends ModelePDFMo
 		$this->marge_basse = isset($conf->global->MAIN_PDF_MARGIN_BOTTOM) ? $conf->global->MAIN_PDF_MARGIN_BOTTOM : 10;
 
 		$this->option_logo = 1; // Display logo
-		$this->option_codeproduitservice = 1; // Display product-service code
 		$this->option_multilang = 1; //Available in several languages
 		$this->option_escompte = 0; // Displays if there has been a discount
 		$this->option_credit_note = 0; // Support credit notes
@@ -309,6 +308,8 @@ class pdf_vinci extends ModelePDFMo
 				$tab_top = 90 + $top_shift;
 				$tab_top_newpage = (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD) ? 42 + $top_shift : 10);
 
+				$tab_height = $this->page_hauteur - $tab_top - $heightforfooter - $heightforfreetext;
+
 
 				// Affiche notes
 				$notetoshow = empty($object->note_public) ? '' : $object->note_public;
@@ -412,8 +413,8 @@ class pdf_vinci extends ModelePDFMo
 						}
 						$height_note = $posyafter - $tab_top_newpage;
 						$pdf->Rect($this->marge_gauche, $tab_top_newpage - 1, $tab_width, $height_note + 1);
-					} else // No pagebreak
-					{
+					} else {
+						// No pagebreak
 						$pdf->commitTransaction();
 						$posyafter = $pdf->GetY();
 						$height_note = $posyafter - $tab_top;

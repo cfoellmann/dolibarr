@@ -149,7 +149,7 @@ $morehtmlref = '<div class="refidno">';
 $morehtmlref .= $form->editfieldkey("Label", 'label', $object->label, $object, 0, 'string', '', 0, 1);
 $morehtmlref .= $form->editfieldval("Label", 'label', $object->label, $object, 0, 'string', '', null, null, '', 1);
 // Project
-if (!empty($conf->projet->enabled)) {
+if (!empty($conf->project->enabled)) {
 	$langs->loadLangs(array("projects"));
 	$morehtmlref .= '<br>'.$langs->trans('Project').' : ';
 	if ($user->rights->loan->write) {
@@ -187,7 +187,7 @@ $morehtmlright = '';
 dol_banner_tab($object, 'loanid', $linkback, 1, 'rowid', 'ref', $morehtmlref, '', 0, '', $morehtmlright);
 
 ?>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function() {
 	$('[name^="mens"]').focusout(function() {
 		var echeance=$(this).attr('ech');
