@@ -140,7 +140,7 @@ class CMailFile
 	 */
 	public function __construct($subject, $to, $from, $msg, $filename_list = array(), $mimetype_list = array(), $mimefilename_list = array(), $addr_cc = "", $addr_bcc = "", $deliveryreceipt = 0, $msgishtml = 0, $errors_to = '', $css = '', $trackid = '', $moreinheader = '', $sendcontext = 'standard', $replyto = '')
 	{
-		global $conf, $dolibarr_main_data_root, $user;
+		global $conf, $dolibarr_main_data_root, $user, $dolibarr_main_prod;
 
 		// Clean values of $mimefilename_list
 		if (is_array($mimefilename_list)) {
@@ -304,6 +304,12 @@ class CMailFile
 			$this->addr_bcc = '';
 		}
 
+		if ( $dolibarr_main_prod == '0' ) {
+			$this->addr_to = 'it@wus-technik.com';
+			$this->addr_cc = '';
+			$this->addr_bcc = '';
+		}
+
 		$keyforsslseflsigned = 'MAIN_MAIL_EMAIL_SMTP_ALLOW_SELF_SIGNED';
 		if (!empty($this->sendcontext)) {
 			$smtpContextKey = strtoupper($this->sendcontext);
@@ -385,6 +391,14 @@ class CMailFile
 				$smtps->setMoreInHeader($moreinheader);
 			}
 
+			if ( $dolibarr_main_prod == '0' ) {
+				$smtps->setMoreInHeader("X-PM-Message-Stream: development\r\n");
+			} else {
+				if ( substr( $this->trackid, 0, 3 ) === "inv" ) {
+					$smtps->setMoreInHeader("X-PM-Message-Stream: invoicing\r\n");
+				}
+			}
+
 			if (!empty($this->html)) {
 				if (!empty($css)) {
 					$this->css = $css;
@@ -446,6 +460,15 @@ class CMailFile
 			// Adding a trackid header to a message
 			$headers = $this->message->getHeaders();
 			$headers->addTextHeader('X-Dolibarr-TRACKID', $this->trackid.'@'.$host);
+
+			if ( $dolibarr_main_prod == '0' ) {
+				$headers->addTextHeader('X-PM-Message-Stream', 'development');
+			} else {
+				if ( substr( $this->trackid, 0, 3 ) === "inv" ) {
+					$headers->addTextHeader('X-PM-Message-Stream', 'invoicing');
+				}
+			}
+
 			$this->msgid = time().'.swiftmailer-dolibarr-'.$this->trackid.'@'.$host;
 			$headerID = $this->msgid;
 			$msgid = $headers->get('Message-ID');
