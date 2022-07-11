@@ -802,7 +802,7 @@ if (empty($reshook)) {
 			}
 
 			if (!GETPOST('ref_supplier')) {
-				setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('RefSupplier')), null, 'errors');
+				setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('FournFactureRefSupplier')), null, 'errors');
 				$action = 'create';
 				$_GET['socid'] = $_POST['socid'];
 				$error++;
@@ -951,7 +951,7 @@ if (empty($reshook)) {
 			}
 
 			if (!GETPOST('ref_supplier')) {
-				setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('RefSupplier')), null, 'errors');
+				setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('FournFactureRefSupplier')), null, 'errors');
 				$action = 'create';
 				$_GET['socid'] = $_POST['socid'];
 				$error++;
@@ -2128,7 +2128,7 @@ if ($action == 'create') {
 	}
 
 	// Ref supplier
-	print '<tr><td class="fieldrequired">'.$langs->trans('RefSupplier').'</td><td><input name="ref_supplier" value="'.(GETPOSTISSET('ref_supplier') ? GETPOST('ref_supplier') : (!empty($objectsrc->ref_supplier) ? $objectsrc->ref_supplier : '')).'" type="text"';
+	print '<tr><td class="fieldrequired">'.$langs->trans('FournFactureRefSupplier').'</td><td><input name="ref_supplier" value="'.(GETPOSTISSET('ref_supplier') ? GETPOST('ref_supplier') : (!empty($objectsrc->ref_supplier) ? $objectsrc->ref_supplier : '')).'" type="text"';
 	if (!empty($societe->id) && $societe->id > 0) {
 		print ' autofocus';
 	}
@@ -2667,7 +2667,7 @@ if ($action == 'create') {
 		if ($action == 'clone') {
 			// Create an array for form
 			$formquestion = array(
-				array('type' => 'text', 'name' => 'newsupplierref', 'label' => $langs->trans("RefSupplier"), 'value' => $langs->trans("CopyOf").' '.$object->ref_supplier),
+				array('type' => 'text', 'name' => 'newsupplierref', 'label' => $langs->trans("FournFactureRefSupplier"), 'value' => $langs->trans("CopyOf").' '.$object->ref_supplier),
 				array('type' => 'date', 'name' => 'newdate', 'label' => $langs->trans("Date"), 'value' => dol_now())
 			);
 			// Ask confirmation to clone
@@ -2853,8 +2853,8 @@ if ($action == 'create') {
 
 		$morehtmlref = '<div class="refidno">';
 		// Ref supplier
-		$morehtmlref .= $form->editfieldkey("RefSupplier", 'ref_supplier', $object->ref_supplier, $object, $usercancreate, 'string', '', 0, 1);
-		$morehtmlref .= $form->editfieldval("RefSupplier", 'ref_supplier', $object->ref_supplier, $object, $usercancreate, 'string', '', null, null, '', 1);
+		$morehtmlref .= $form->editfieldkey("FournFactureRefSupplier", 'ref_supplier', $object->ref_supplier, $object, $usercancreate, 'string', '', 0, 1);
+		$morehtmlref .= $form->editfieldval("FournFactureRefSupplier", 'ref_supplier', $object->ref_supplier, $object, $usercancreate, 'string', '', null, null, '', 1);
 		// Thirdparty
 		$morehtmlref .= '<br>'.$langs->trans('ThirdParty').' : '.$object->thirdparty->getNomUrl(1, 'supplier');
 		if (empty($conf->global->MAIN_DISABLE_OTHER_LINK) && $object->thirdparty->id > 0) {
