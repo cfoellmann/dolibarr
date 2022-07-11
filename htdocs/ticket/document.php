@@ -45,8 +45,8 @@ $confirm  = GETPOST('confirm', 'alpha');
 
 // Get parameters
 $limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
-$sortfield = GETPOST("sortfield", 'alpha');
-$sortorder = GETPOST("sortorder", 'alpha');
+$sortfield = GETPOST('sortfield', 'aZ09comma');
+$sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) {
 	$page = 0;
@@ -134,7 +134,7 @@ if ($object->id) {
 		$langs->load("users");
 		$fuser = new User($db);
 		$fuser->fetch($object->fk_user_create);
-		$morehtmlref .= $fuser->getNomUrl(0);
+		$morehtmlref .= $fuser->getNomUrl(-1);
 	}
 	if (!empty($object->origin_email)) {
 		$morehtmlref .= '<br>'.$langs->trans("CreatedBy").' : ';
@@ -156,7 +156,7 @@ if ($object->id) {
 	}
 
 	// Project
-	if (!empty($conf->projet->enabled)) {
+	if (!empty($conf->project->enabled)) {
 		$langs->load("projects");
 		$morehtmlref .= '<br>'.$langs->trans('Project').' ';
 		if ($user->rights->ticket->write) {
