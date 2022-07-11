@@ -4803,10 +4803,16 @@ abstract class CommonObject
 		}
 		$extrafields->fetch_name_optionals_label($this->table_element_line);
 
+		if ($defaulttpldir == '/bom/tpl') {
+			$dirtpls = array_merge(array(), array($defaulttpldir));
+		} else {
+			$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+		}
+
 		// Output template part (modules that overwrite templates must declare this into descriptor)
 		// Use global variables + $dateSelector + $seller and $buyer
 		// Note: This is deprecated. If you need to overwrite the tpl file, use instead the hook 'formAddObjectLine'.
-		$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+//		$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
 		foreach ($dirtpls as $module => $reldir) {
 			if (!empty($module)) {
 				$tpl = dol_buildpath($reldir.'/objectline_create.tpl.php');
@@ -4871,7 +4877,13 @@ abstract class CommonObject
 			// Output template part (modules that overwrite templates must declare this into descriptor)
 			// Use global variables + $dateSelector + $seller and $buyer
 			// Note: This is deprecated. If you need to overwrite the tpl file, use instead the hook.
-			$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+//			$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+			if ($defaulttpldir == '/bom/tpl') {
+				$dirtpls = array_merge(array(), array($defaulttpldir));
+			} else {
+				$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+			}
+
 			foreach ($dirtpls as $module => $reldir) {
 				if (!empty($module)) {
 					$tpl = dol_buildpath($reldir.'/objectline_title.tpl.php');
@@ -4994,7 +5006,13 @@ abstract class CommonObject
 			// Output template part (modules that overwrite templates must declare this into descriptor)
 			// Use global variables + $dateSelector + $seller and $buyer
 			// Note: This is deprecated. If you need to overwrite the tpl file, use instead the hook printObjectLine and printObjectSubLine.
-			$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+//			$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+			if ($defaulttpldir == '/bom/tpl') {
+				$dirtpls = array_merge(array(), array($defaulttpldir));
+			} else {
+				$dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
+			}
+
 			foreach ($dirtpls as $module => $reldir) {
 				if (!empty($module)) {
 					$tpl = dol_buildpath($reldir.'/objectline_view.tpl.php');
