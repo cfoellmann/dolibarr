@@ -145,7 +145,6 @@ $boxstatFromHook = '';
 $langs->loadLangs(array('commercial', 'bills', 'orders', 'contracts'));
 
 // Dolibarr Working Board with weather
-
 if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 	$showweather = (empty($conf->global->MAIN_DISABLE_METEO) || $conf->global->MAIN_DISABLE_METEO == 2) ? 1 : 0;
 
@@ -156,21 +155,21 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/workboardresponse.class.php';
 
 	// Number of actions to do (late)
-	if (!empty($conf->agenda->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_AGENDA) && $user->rights->agenda->myactions->read) {
+	if (isModEnabled('agenda') && empty($conf->global->MAIN_DISABLE_BLOCK_AGENDA) && $user->rights->agenda->myactions->read) {
 		include_once DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php';
 		$board = new ActionComm($db);
 		$dashboardlines[$board->element] = $board->load_board($user);
 	}
 
 	// Number of project opened
-	if (!empty($conf->projet->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_PROJECT) && $user->rights->projet->lire) {
+	if (!empty($conf->project->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_PROJECT) && $user->rights->projet->lire) {
 		include_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
 		$board = new Project($db);
 		$dashboardlines[$board->element] = $board->load_board($user);
 	}
 
 	// Number of tasks to do (late)
-	if (!empty($conf->projet->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_PROJECT) && empty($conf->global->PROJECT_HIDE_TASKS) && $user->rights->projet->lire) {
+	if (!empty($conf->project->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_PROJECT) && empty($conf->global->PROJECT_HIDE_TASKS) && $user->rights->projet->lire) {
 		include_once DOL_DOCUMENT_ROOT.'/projet/class/task.class.php';
 		$board = new Task($db);
 		$dashboardlines[$board->element] = $board->load_board($user);
@@ -229,7 +228,7 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 	}
 
 	// Number of invoices customers (paid)
-	if (!empty($conf->facture->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_CUSTOMER) && $user->rights->facture->lire) {
+	if (isModEnabled('facture') && empty($conf->global->MAIN_DISABLE_BLOCK_CUSTOMER) && $user->rights->facture->lire) {
 		include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
 		$board = new Facture($db);
 		$dashboardlines[$board->element] = $board->load_board($user);
@@ -252,11 +251,24 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 		}
 	}
 
+
 	// Number of cheque to send
-	if (!empty($conf->banque->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_BANK) && $user->rights->banque->lire && !$user->socid && empty($conf->global->BANK_DISABLE_CHECK_DEPOSIT)) {
-		include_once DOL_DOCUMENT_ROOT.'/compta/paiement/cheque/class/remisecheque.class.php';
-		$board = new RemiseCheque($db);
-		$dashboardlines[$board->element] = $board->load_board($user);
+	if (!empty($conf->banque->enabled) && empty($conf->global->MAIN_DISABLE_BLOCK_BANK) && $user->rights->banque->lire && !$user->socid) {
+		if (empty($conf->global->BANK_DISABLE_CHECK_DEPOSIT)) {
+			include_once DOL_DOCUMENT_ROOT.'/compta/paiement/cheque/class/remisecheque.class.php';
+			$board = new RemiseCheque($db);
+			$dashboardlines[$board->element] = $board->load_board($user);
+		}
+		if (!empty($conf->prelevement->enabled)) {
+			include_once DOL_DOCUMENT_ROOT.'/compta/prelevement/class/bonprelevement.class.php';
+			$board = new BonPrelevement($db);
+			$dashboardlines[$board->element.'_direct_debit'] = $board->load_board($user, 'direct_debit');
+		}
+		if (!empty($conf->paymentbybanktransfer->enabled)) {
+			include_once DOL_DOCUMENT_ROOT.'/compta/prelevement/class/bonprelevement.class.php';
+			$board = new BonPrelevement($db);
+			$dashboardlines[$board->element.'_credit_transfer'] = $board->load_board($user, 'credit_transfer');
+		}
 	}
 
 	// Number of foundation members
@@ -375,7 +387,7 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 			array(
 				'groupName' => 'BankAccount',
 				'stats' =>
-					array('bank_account', 'chequereceipt'),
+					array('bank_account', 'chequereceipt', 'widthdraw_direct_debit', 'widthdraw_credit_transfer'),
 			),
 		'member' =>
 			array(
@@ -414,7 +426,7 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 	$totallate = $totaltodo = 0;
 
 	//Remove any invalid response
-	//load_board can return an integer if failed or WorkboardResponse if OK
+	//load_board can return an integer if failed, or WorkboardResponse if OK
 	$valid_dashboardlines = array();
 	foreach ($dashboardlines as $workboardid => $tmp) {
 		if ($tmp instanceof WorkboardResponse) {
@@ -477,6 +489,8 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 
 		foreach ($dashboardgroup as $groupKey => $groupElement) {
 			$boards = array();
+
+			// Scan $groupElement and save the one with 'stats' that lust be used for Open object dashboard
 			if (empty($conf->global->MAIN_DISABLE_NEW_OPENED_DASH_BOARD)) {
 				foreach ($groupElement['stats'] as $infoKey) {
 					if (!empty($valid_dashboardlines[$infoKey])) {
@@ -492,7 +506,6 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 				}
 				$groupName = $langs->trans($groupElement['groupName']);
 				$groupKeyLowerCase = strtolower($groupKey);
-				$nbTotalForGroup = 0;
 
 				// global stats
 				$globalStatsKey = false;
@@ -513,7 +526,7 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 							}
 							$groupElement['globalStats']['text'] = $langs->trans('Total').' : '.$langs->trans($titres[$keyIndex]).' ('.$groupElement['globalStats']['total'].')';
 							$groupElement['globalStats']['total'] = $nbTotal;
-							$groupElement['globalStats']['link'] = $links[$keyIndex];
+							//$groupElement['globalStats']['link'] = $links[$keyIndex];
 						}
 					}
 				}
@@ -565,7 +578,17 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 						$nbtodClass = 'opacitymedium';
 					}
 
-					$openedDashBoard .= '<a href="'.$board->url.'" class="info-box-text info-box-text-a">'.$infoName.'<span class="classfortooltip'.($nbtodClass ? ' '.$nbtodClass : '').'" title="'.$board->label.'" >'.$board->nbtodo.'</span>';
+					// Forge the line to show into the open object box
+					$labeltoshow = $board->label.' ('.$board->nbtodo.')';
+					if ($board->total > 0) {
+						$labeltoshow .= ' - '.price($board->total, 0, $langs, 1, -1, -1, $conf->currency);
+					}
+					$openedDashBoard .= '<a href="'.$board->url.'" class="info-box-text info-box-text-a">'.$infoName.'<span class="classfortooltip'.($nbtodClass ? ' '.$nbtodClass : '').'" title="'.$labeltoshow.'" >';
+					$openedDashBoard .= $board->nbtodo;
+					if ($board->total > 0 && !empty($conf->global->MAIN_WORKBOARD_SHOW_TOTAL_WO_TAX)) {
+						$openedDashBoard .= ' : '.price($board->total, 0, $langs, 1, -1, -1, $conf->currency);
+					}
+					$openedDashBoard .= '</span>';
 					if ($textLate) {
 						if ($board->url_late) {
 							$openedDashBoard .= '</a>';
@@ -576,10 +599,6 @@ if (empty($conf->global->MAIN_DISABLE_GLOBAL_WORKBOARD)) {
 						$openedDashBoard .= $textLate;
 					}
 					$openedDashBoard .= '</a>'."\n";
-
-					if ($board->total > 0 && !empty($conf->global->MAIN_WORKBOARD_SHOW_TOTAL_WO_TAX)) {
-						$openedDashBoard .= '<a href="'.$board->url.'" class="info-box-text">'.$langs->trans('Total').' '.price($board->total).'</a>';
-					}
 					$openedDashBoard .= '</div>'."\n";
 				}
 

@@ -265,7 +265,7 @@ if ($object->id > 0) {
 	$sql .= " WHERE r.libelle NOT LIKE 'tou%'"; // On ignore droits "tous"
 	$sql .= " AND r.entity = ".((int) $entity);
 	if (empty($conf->global->MAIN_USE_ADVANCED_PERMS)) {
-		$sql .= " AND r.perms NOT LIKE '%_advance'"; // Hide advanced perms if option is disable
+		// $sql .= " AND r.perms NOT LIKE '%_advance'"; // Hide advanced perms if option is disable
 	}
 	$sql .= " ORDER BY r.family_position, r.module_position, r.module, r.id";
 
@@ -328,7 +328,7 @@ if ($object->id > 0) {
 			//print img_object('', $picto, 'class="inline-block pictoobjectwidth"').' '.$objMod->getName();
 			print '</td>';
 
-			if (is_array($permsgroupbyentity[$entity])) {
+			if (!empty($permsgroupbyentity[$entity]) && is_array($permsgroupbyentity[$entity])) {
 				if (in_array($obj->id, $permsgroupbyentity[$entity])) {
 					// Own permission by group
 					if ($caneditperms) {
