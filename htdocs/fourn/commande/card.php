@@ -1866,6 +1866,17 @@ if ($action == 'create') {
 
 	$res = $object->fetch_optionals();
 
+	$nbfreetextproduct = 0; // Nb of lins of free products/services
+	$nbproduct         = 0; // Nb of predefined product lines to dispatch (already done or not) if SUPPLIER_ORDER_DISABLE_STOCK_DISPATCH_WHEN_TOTAL_REACHED is off (default)
+
+	foreach ($object->lines as $line) {
+		if (empty($line->fk_product) || $line->product_type == 1) {
+			$nbfreetextproduct++;
+		}
+		if (!empty($line->fk_product) && !($line->product_type == 1)) {
+			$nbproduct++;
+		}
+	}
 
 	$head = ordersupplier_prepare_head($object);
 
@@ -2549,8 +2560,7 @@ if ($action == 'create') {
 						}
 					}
 				}
-
-				if (in_array($object->statut, array(3, 4, 5))) {
+				if (in_array($object->statut, array(3, 4)) && ($nbproduct > 0 )) { // TODO why remove 5?
 					if (((!empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD)) || !empty($conf->supplier_order->enabled)) && $usercanreceive) {
 						print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_URL_ROOT.'/fourn/commande/dispatch.php?id='.$object->id.'">'.$labelofbutton.'</a></div>';
 					} else {
@@ -2569,7 +2579,12 @@ if ($action == 'create') {
 
 			// Classify received (this does not record reception)
 			if ($object->statut == CommandeFournisseur::STATUS_ORDERSENT || $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY) {
-				if ($usercanreceive) {
+				if (
+					$usercanreceive && ( // allowed to receive
+						($nbproduct == 0 && $nbfreetextproduct > 0) || // only services or freetext
+					    ($nbproduct > 0 && $nbfreetextproduct > 0 && $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY) // product dispatched + freetext remaining
+					)
+				) { // TODO comment
 					print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&token='.newToken().'&action=classifyreception#classifyreception">'.$langs->trans("ClassifyReception").'</a></div>';
 				}
 			}
