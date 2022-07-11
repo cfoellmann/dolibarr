@@ -521,6 +521,12 @@ class pdf_storm extends ModelePDFDeliveryOrder
 
 					$pdf->SetFont('', '', $default_font_size - 1); // On repositionne la police par defaut
 
+					// Position
+					if ($this->getColumnStatus('rang')) {
+						$rang_num = ($i + 1) * 10;
+						$this->printStdColumnContent($pdf, $curY, 'rang', $rang_num);
+						$nexY = max($pdf->GetY(), $nexY);
+					}
 
 					// Quantity
 					if ($this->getColumnStatus('qty_shipped')) {
