@@ -2810,8 +2810,10 @@ if ($action == 'create' && $usercancreate) {
 
 				// Delete order
 				if ($usercandelete) {
-					if ($numshipping == 0) {
+					if ($numshipping == 0 && ( $object->statut == Commande::STATUS_DRAFT ) ) {
 						print dolGetButtonAction('', $langs->trans('Delete'), 'delete', $_SERVER["PHP_SELF"].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id, '');
+					} else if ($object->statut !== Commande::STATUS_DRAFT) {
+						print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("Löschen nur im Entwurf-Status möglich!").'">'.$langs->trans("Delete").'</a>';
 					} else {
 						print dolGetButtonAction($langs->trans('ShippingExist'), $langs->trans('Delete'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 					}

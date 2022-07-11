@@ -2632,7 +2632,7 @@ if ($action == 'create') {
 			}
 
 			// Delete
-			if (!empty($usercandelete)) {
+			if (($object->statut == CommandeFournisseur::STATUS_DRAFT && !empty($usercancreate))) { // !empty($usercandelete) ||
 				if ($hasreception) {
 					print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("ReceptionExist").'">'.$langs->trans("Delete").'</a>';
 				} else {
