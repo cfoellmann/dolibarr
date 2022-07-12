@@ -1502,7 +1502,7 @@ if (!empty($conf->project->enabled)) {
 }
 
 // Mode creation
-if ($action == 'create' && $usercancreate) {
+if (($action == 'create' || (empty($action) && empty($id))) && $usercancreate) {
 	print load_fiche_titre($langs->trans('CreateCustomerOrder'), '', 'order');
 
 	$soc = new Societe($db);
