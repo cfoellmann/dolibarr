@@ -511,6 +511,7 @@ if (($action == 'create' || (empty($action) && empty($id))) && $user->rights->pr
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
+	print '<input type="hidden" name="backtopageforcancel" value="'.$backtopageforcancel.'">';
 	print '<input type="hidden" name="backtopagejsfields" value="'.$backtopagejsfields.'">';
 
 	print dol_get_fiche_head();
