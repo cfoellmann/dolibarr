@@ -878,6 +878,8 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		print '<tr class="liste_titre trheight5em">';
 		// Product
 		print '<td>'.$langs->trans("Product").'</td>';
+		// Storage location
+		print '<td class="right">'.$langs->trans("StorageLocation").'</td>';
 		// Qty
 		print '<td class="right">'.$langs->trans("Qty").'</td>';
 		// Unit
@@ -1171,6 +1173,11 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 						// Product
 						print '<td>' . $tmpproduct->getNomUrl(1);
 						print '<br><div class="opacitymedium small tdoverflowmax150" title="' . dol_escape_htmltag($tmpproduct->label) . '">' . $tmpproduct->label . '</div>';
+						print '</td>';
+
+						// Storage location
+						print '<td class="right nowraponall">';
+						print '<code style="font-size: 1.3em; font-weight: bold;">'.$tmpproduct->array_options['options_storage_location'].'</code>';
 						print '</td>';
 
 						// Qty
