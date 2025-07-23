@@ -156,6 +156,8 @@ $arrayfields = array(
 	'u.datec' => array('label' => "DateCreation", 'checked' => '0', 'position' => 500),
 	'u.tms' => array('label' => "DateModificationShort", 'checked' => '0', 'position' => 500),
 	'u.statut' => array('label' => "Status", 'checked' => '1', 'position' => 1000),
+	'u.dateemployment'=>array('label'=>"Anstellungsbeginn", 'checked'=>0, 'position'=>600),
+	'u.dateemploymentend'=>array('label'=>"Anstellungsende", 'checked'=>0, 'position'=>610),
 );
 
 if (getDolGlobalInt('MAIN_ENABLE_LOGINS_PRIVACY') == 0) {
@@ -391,6 +393,7 @@ $sql = "SELECT DISTINCT u.rowid, u.lastname, u.firstname, u.admin, u.fk_soc, u.l
 $sql .= " u.fk_user,";
 $sql .= " u.ref_employee, u.national_registration_number, u.job, u.salary, u.datelastlogin, u.datepreviouslogin,";
 $sql .= " u.datestartvalidity, u.dateendvalidity,";
+$sql .= " u.dateemployment, u.dateemploymentend,";
 $sql .= " u.ldap_sid, u.statut as status, u.entity,";
 $sql .= " u.tms as date_modification, u.datec as date_creation,";
 $sql .= " u2.rowid as id2, u2.login as login2, u2.firstname as firstname2, u2.lastname as lastname2, u2.admin as admin2, u2.fk_soc as fk_soc2, u2.office_phone as ofice_phone2, u2.user_mobile as user_mobile2, u2.email as email2, u2.gender as gender2, u2.photo as photo2, u2.entity as entity2, u2.statut as status2,";
@@ -852,6 +855,12 @@ if (!empty($arrayfields['u.datelastlogin']['checked']) && getDolGlobalInt('MAIN_
 if (!empty($arrayfields['u.datepreviouslogin']['checked']) && getDolGlobalInt('MAIN_ENABLE_LOGINS_PRIVACY') == 0) {
 	print '<td class="liste_titre"></td>';
 }
+if (!empty($arrayfields['u.dateemployment']['checked'])) {
+	print '<td class="liste_titre"></td>';
+}
+if (!empty($arrayfields['u.dateemploymentend']['checked'])) {
+	print '<td class="liste_titre"></td>';
+}
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_input.tpl.php';
 // Fields from hook
@@ -978,6 +987,12 @@ if (!empty($arrayfields['u.datepreviouslogin']['checked']) && getDolGlobalInt('M
 	print_liste_field_titre("PreviousConnexion", $_SERVER['PHP_SELF'], "u.datepreviouslogin", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
+if (!empty($arrayfields['u.dateemployment']['checked'])) {
+	print_liste_field_titre("Anstellungsbeginn", $_SERVER['PHP_SELF'], "u.dateemployment", $param, "", '', $sortfield, $sortorder, 'center ');
+}
+if (!empty($arrayfields['u.dateemploymentend']['checked'])) {
+	print_liste_field_titre("Anstellungsende", $_SERVER['PHP_SELF'], "u.dateemploymentend", $param, "", '', $sortfield, $sortorder, 'center ');
+}
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
 // Hook fields
@@ -1051,6 +1066,8 @@ while ($i < $imaxinloop) {
 	$object->dateendvalidity = $db->jdate($obj->dateendvalidity);
 	$object->country_code = $obj->country_code;
 	$object->country = $obj->country_label;
+	$object->dateemployment = $db->jdate($obj->dateemployment);
+	$object->dateemploymentend = $db->jdate($obj->dateemploymentend);
 
 	$li = $object->getNomUrl(-1, '', 0, 0, 24, 1, 'login', '', 1);
 
@@ -1380,6 +1397,20 @@ while ($i < $imaxinloop) {
 			print '<td class="center nowraponall">';
 			print dol_print_date($db->jdate($obj->date_modification), 'dayhour', 'tzuser');
 			print '</td>';
+			if (!$i) {
+				$totalarray['nbfield']++;
+			}
+		}
+		// Date employment start
+		if (!empty($arrayfields['u.dateemployment']['checked'])) {
+			print '<td class="nowrap center">'.dol_print_date($db->jdate($obj->dateemployment), "day").'</td>';
+			if (!$i) {
+				$totalarray['nbfield']++;
+			}
+		}
+		// Date employment end
+		if (!empty($arrayfields['u.dateemploymentend']['checked'])) {
+			print '<td class="nowrap center">'.dol_print_date($db->jdate($obj->dateemploymentend), "day").'</td>';
 			if (!$i) {
 				$totalarray['nbfield']++;
 			}
